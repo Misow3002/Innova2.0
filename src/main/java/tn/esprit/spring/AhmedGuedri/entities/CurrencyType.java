@@ -1,5 +1,5 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
-public enum TypePieceIdentie {
-    CIN,PASSEPORT
+public enum CurrencyType {
+    TND,EUR,USD,GBP
 }

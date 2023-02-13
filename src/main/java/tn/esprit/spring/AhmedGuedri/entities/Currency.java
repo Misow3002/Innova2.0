@@ -10,25 +10,24 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Patient implements Serializable {
+public class Currency implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idPatient")
-    private Long idPatient;
+    @Column(name="idcurrency")
+    private Long IdCurrency;
     @Enumerated(EnumType.STRING)
-    private TypePieceIdentie typepieceidentie;
-    private String identifiantPieceIdentie;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateEmission;
-    private String nomP;
-    private String prenomP;
-    @ManyToMany
-    Set<Pathologie> pathologie;
+    private CurrencyType CurrencyType;
+    @Temporal(TemporalType.DATE)
+    private Date DateC ;
+    private Float ExchangeRate;
+    //Relation --> Products
+    @ManyToMany (mappedBy = "CurrencyList")
+    List<Products> ProductsList;
 }
+

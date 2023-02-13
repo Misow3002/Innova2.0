@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,9 +19,38 @@ import java.util.List;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idUser")
-    private Long idUser;
-    private String prenomE;
-    private String nomE;
+    @Column(name="id")
+    private Long Id;
+    private String FirstName;
+    private String LastName;
+    private Date BirthDate;
+    @Enumerated(EnumType.STRING)
+    private Roles Roles;
+    private String Adress;
+    private String Email;
+    private Number PhoneNumber;
+    private boolean Disabled;
+    private String Country;
+//Relation Messages
+    @OneToMany()
+    List<Message> SentList;
+    @OneToMany()
+    List<Message> ReceivedList;
+    //Relation PWD
+    @OneToOne
+    HashedPWD hashedPWD;
+    //Relation Fees
+    @OneToMany(mappedBy = "userFees")
+    List<Fees> FeesList;
+    //Relation Inquiry
+    @OneToMany(mappedBy = "userInquiries")
+    List<Inquiry> InquiryList;
+    //Relation Product
+    @ManyToMany(mappedBy = "userProducts")
+    List<Products> ProductList;
+    //Relation Orders
+    @ManyToOne
+    Orders User_order;
+
 }
 

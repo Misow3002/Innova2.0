@@ -9,22 +9,22 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class FamilleActe implements Serializable {
+public class ChatRoom implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idFA")
-    private Long idFA;
-    private String codeFA;
-    private String libelle;
-    private String description;
+    @Column(name="idchatroom")
+    private Long IdChatRoom;
+    private String NameChat;
+    private Boolean IsActive;
+    //Relation-->Message
+    @OneToMany(mappedBy = "chatRoom")
+    List<Message> messages;
 
-    @OneToMany
-    Set<Acte> acte;
 }
+

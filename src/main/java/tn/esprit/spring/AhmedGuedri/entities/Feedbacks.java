@@ -9,26 +9,23 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Acte implements Serializable {
+public class Feedbacks implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idActe")
-    private Long idActe;
-    private String codeActe;
-    private int CotationActe;
-    private float prixUnitaireActe;
-    private String designationActe;
-
+    @Column(name="idfeedbacks")
+    private Long IdFeedBacks;
+    private Number Stars;
     @ManyToOne
-    FamilleActe familleActe;
+    Products feedbacksProd;
 
-    @ManyToMany(mappedBy ="acte",cascade = CascadeType.PERSIST)
-    Set<Pathologie> pathologie;
+    //Relation --> Feedobject
+    @OneToOne
+    FeedObject feedObject;
 }
+
