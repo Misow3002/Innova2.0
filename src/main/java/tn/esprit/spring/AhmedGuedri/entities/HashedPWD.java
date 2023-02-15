@@ -19,13 +19,13 @@ import java.util.List;
 public class HashedPWD implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @OneToOne
-    User user;
+    Long PassId;
     //RISK 90%
     private String Password;
     @Temporal(TemporalType.DATE)
     private Date ChangeDate;
-
+    @OneToOne
+    User user;
 
 }
 
