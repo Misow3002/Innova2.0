@@ -24,12 +24,12 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public Products getProduct(Integer IdProducts) {
+    public Products getProduct(Long IdProducts) {
         return productsRepository.findById(IdProducts).orElse(null);
     }
 
     @Override
-    public void removeProduct(Integer IdProducts) {
+    public void removeProduct(Long IdProducts) {
         productsRepository.deleteById(IdProducts);
     }
 }

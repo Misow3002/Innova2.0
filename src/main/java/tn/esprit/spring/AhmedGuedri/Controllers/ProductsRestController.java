@@ -23,13 +23,13 @@ public class ProductsRestController {
         return productService.addOrUpdateProduct(products);
     }
     @GetMapping("/get/{id}")
-    Products getStudent(@PathVariable("id") Integer IdProduct){
+    Products getStudent(@PathVariable("id") Long IdProduct){
         return productService.getProduct(IdProduct);
     }
     @GetMapping("/all")
     List<Products> getAllStudent(){return productService.retrieveAllProducts();}
     @DeleteMapping("/delete/{id}")
-    void deleteStudent(@PathVariable("id") Integer IdProduct){
+    void deleteStudent(@PathVariable("id") Long IdProduct){
         productService.removeProduct(IdProduct);
     }
 

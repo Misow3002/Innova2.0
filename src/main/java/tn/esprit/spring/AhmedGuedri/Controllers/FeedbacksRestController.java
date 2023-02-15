@@ -24,13 +24,13 @@ public class FeedbacksRestController {
         return feedbackService.addOrUpdateFeedback(feedback);
     }
     @GetMapping("/get/{id}")
-    Feedbacks getFeedback(@PathVariable("id") Integer Id){
+    Feedbacks getFeedback(@PathVariable("id") Long Id){
         return feedbackService.getFeedback(Id);
     }
     @GetMapping("/all")
     List<Feedbacks> getAllFeedbacks(){return feedbackService.retrieveAllFeedbacks();}
     @DeleteMapping("/delete/{id}")
-    void deleteInquiry(@PathVariable("id") Integer Id){
+    void deleteInquiry(@PathVariable("id") Long Id){
         feedbackService.removeFeedback(Id);
     }
 

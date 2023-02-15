@@ -8,8 +8,8 @@ import java.util.List;
 public interface IFeedbackService {
     List<Feedbacks> retrieveAllFeedbacks();
     Feedbacks addOrUpdateFeedback(Feedbacks f);
-    Feedbacks getFeedback(Integer IdFeedbacks);
-    void removeFeedback(Integer IdFeedbacks);
+    Feedbacks getFeedback(Long IdFeedbacks);
+    void removeFeedback(Long IdFeedbacks);
 
     //advanced
     /*Feedbacks addAndAssigntoProduct(Feedbacks e, Integer IdProduct);*/

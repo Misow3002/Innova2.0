@@ -23,12 +23,12 @@ public class FeedbackService implements IFeedbackService{
     }
 
     @Override
-    public Feedbacks getFeedback(Integer IdFeedbacks) {
+    public Feedbacks getFeedback(Long IdFeedbacks) {
         return feedbacksRepository.findById(IdFeedbacks).orElse(null);
     }
 
     @Override
-    public void removeFeedback(Integer IdFeedbacks) {
+    public void removeFeedback(Long IdFeedbacks) {
         feedbacksRepository.deleteById(IdFeedbacks);
     }
 
