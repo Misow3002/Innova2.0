@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
     private static final Logger logger = LogManager.getLogger(LoggingAspect.class);
 
-    @After("execution(* tn.esprit.spring.AhmedGuedri.service..*(..))")
+    @After("execution(* tn.esprit.spring.AhmedGuedri.Services..*(..))")
     public void logMethodExit(JoinPoint joinPoint) {
         String name = joinPoint.getSignature().getName();
         logger.info("Method "+name+"has fully executed");
