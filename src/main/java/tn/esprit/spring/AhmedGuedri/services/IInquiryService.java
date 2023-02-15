@@ -1,4 +1,4 @@
-package tn.esprit.spring.services;
+package tn.esprit.spring.AhmedGuedri.Services;
 import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
 import java.util.List;
 

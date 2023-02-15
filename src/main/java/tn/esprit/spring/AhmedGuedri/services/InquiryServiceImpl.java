@@ -1,11 +1,10 @@
-package tn.esprit.spring.services;
+package tn.esprit.spring.AhmedGuedri.Services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import tn.esprit.spring.AhmedGuedri.Repositories.InquiryRepository;
 import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
-import tn.esprit.spring.repositories.InquiryRepository;
-
-
 @Service
 
 public class InquiryServiceImpl implements IInquiryService {
