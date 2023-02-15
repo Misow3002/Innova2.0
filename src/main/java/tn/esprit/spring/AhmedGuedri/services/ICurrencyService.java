@@ -1,5 +1,4 @@
 package tn.esprit.spring.AhmedGuedri.Services;
-//create Curency Interface
 import java.util.List;
 import tn.esprit.spring.AhmedGuedri.entities.Currency;
 public interface ICurrencyService {
