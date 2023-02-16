@@ -1,5 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import tn.esprit.spring.AhmedGuedri.Repositories.FeedbacksRepository;
 import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
 import tn.esprit.spring.AhmedGuedri.entities.Feedbacks;
@@ -8,7 +10,8 @@ import tn.esprit.spring.AhmedGuedri.entities.Products;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@Service
+@AllArgsConstructor
 public class FeedbackService implements IFeedbackService{
     FeedbacksRepository feedbacksRepository;
     ProductsRepository productsRepository;
