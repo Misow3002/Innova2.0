@@ -33,19 +33,30 @@ public class PWDService implements IPWDService{
     @Override
     public void EditPassword(User u,String password) {
         User user = userRepository.findById(u.getId()).get();
+        Date datenow = new Date();
         if (user.isDisabled()) {
             HashedPWD pass = pwdRepository.findById(u.getId()).get();
-            HashedPWD newUserPass = new HashedPWD();
-            Date date = new Date();
-            newUserPass.setPassword(password);
-            newUserPass.setChangeDate(date);
-            newUserPass.setUser(u);
-            pwdRepository.save(newUserPass);
+            long diff = datenow.getTime() - pass.getChangeDate().getTime();
+            if ((diff / (24 * 60 * 60 * 1000) <= 14)) {
+                System.out.printf("Password Changed");
+                pass.setPassword(password);
+                pass.setChangeDate(datenow);
+                pwdRepository.save(pass);
+            }
+            else
+                System.out.println("Password Date Not yet Expired");
         }
     }
+//            HashedPWD newUserPass = new HashedPWD();
+//            Date date = new Date();
+//            newUserPass.setPassword(password);
+//            newUserPass.setChangeDate(date);
+//            newUserPass.setUser(u);
+//            pwdRepository.save(newUserPass);
+
 
     @Override
-    public void RetievePasswordInfo(User u) {
-
+    public Date RetievePasswordInfo(User u) {
+        return pwdRepository.findByUser(u).getChangeDate();
     }
 }

@@ -8,6 +8,8 @@ import tn.esprit.spring.AhmedGuedri.Services.IPWDService;
 import tn.esprit.spring.AhmedGuedri.Services.IUserService;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/user/")
@@ -28,16 +30,26 @@ public class UserController {
     public ResponseEntity<User> updateUser(@RequestBody User u,String Password) {
 
          iUserService.updateUser(u);
-       // if (!Password.isEmpty())
-       // ipwdService.AssignPasswordToUser(u,Password);
+
+
+
+        if (Password.length()>7)
+        ipwdService.AssignPasswordToUser(u,Password);
         return new ResponseEntity<User>(HttpStatus.CREATED);
 
     }
+
 
     @DeleteMapping("/deleteUser")
     public ResponseEntity<User> deleteUser(@RequestBody User u) {
         iUserService.deleteUser(u);
         return new ResponseEntity<User>(HttpStatus.ACCEPTED);
+
+    }
+    //implementing the method RetievePasswordInfo
+    @GetMapping("/RetievePasswordInfo")
+    public ResponseEntity<String> RetievePasswordInfo(@RequestBody User u) {
+        return new ResponseEntity<String>(ipwdService.RetievePasswordInfo(u),HttpStatus.OK);
 
     }
 }
