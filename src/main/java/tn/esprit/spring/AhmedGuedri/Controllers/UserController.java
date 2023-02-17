@@ -28,9 +28,9 @@ public class UserController {
     public ResponseEntity<User> updateUser(@RequestBody User u,String Password) {
 
          iUserService.updateUser(u);
-        if (!Password.isEmpty())
-        ipwdService.AssignPasswordToUser(u,Password);
-        return new ResponseEntity<User>(HttpStatus.ACCEPTED);
+       // if (!Password.isEmpty())
+       // ipwdService.AssignPasswordToUser(u,Password);
+        return new ResponseEntity<User>(HttpStatus.CREATED);
 
     }
 
