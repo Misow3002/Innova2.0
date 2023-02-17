@@ -10,8 +10,8 @@ import tn.esprit.spring.AhmedGuedri.entities.User;
 
 import java.util.List;
 
-@Service
 
+@Service
 @AllArgsConstructor
 public class ChatRoomService implements IChatRoomService{
 
@@ -31,8 +31,7 @@ public class ChatRoomService implements IChatRoomService{
     public ChatRoom Updatechatrooms(ChatRoom e) {
         return chatRoomRepository.save(e);
     }
-
-
+    
     @Override
     public ChatRoom RemoveChatrooms(Long idchatroom) {
         chatRoomRepository.deleteById(idchatroom);
@@ -43,4 +42,6 @@ public class ChatRoomService implements IChatRoomService{
     public ChatRoom retrieveChatRoom(String id) {
         return chatRoomRepository.findById(Long.parseLong(id)).get();
     }
+
+
 }
