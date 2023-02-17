@@ -29,7 +29,9 @@ public class User implements Serializable {
     private Roles Roles;
     private String Adress;
     private String Email;
-    private Number PhoneNumber;
+    //Anti Bot + PWD Recover
+    private Long Token;
+    private Long PhoneNumber;
     private boolean Disabled;
     private String Country;
 //Relation Messages
@@ -50,8 +52,8 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "userProducts")
     List<Products> ProductList;
     //Relation Orders
-    @ManyToOne
-    Orders User_order;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Orders> User_orders;
 
 }
 
