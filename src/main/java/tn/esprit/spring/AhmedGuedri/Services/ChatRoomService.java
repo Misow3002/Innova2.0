@@ -1,12 +1,11 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.AhmedGuedri.Repositories.ChatRoomRepository;
 import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
-import tn.esprit.spring.AhmedGuedri.entities.User;
+
 
 import java.util.List;
 
