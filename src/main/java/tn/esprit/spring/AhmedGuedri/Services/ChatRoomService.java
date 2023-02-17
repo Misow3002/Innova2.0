@@ -1,17 +1,16 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.AhmedGuedri.Repositories.ChatRoomRepository;
 import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
-import tn.esprit.spring.AhmedGuedri.entities.User;
+
 
 import java.util.List;
 
-@Service
 
+@Service
 @AllArgsConstructor
 public class ChatRoomService implements IChatRoomService{
 
@@ -31,8 +30,7 @@ public class ChatRoomService implements IChatRoomService{
     public ChatRoom Updatechatrooms(ChatRoom e) {
         return chatRoomRepository.save(e);
     }
-
-
+    
     @Override
     public ChatRoom RemoveChatrooms(Long idchatroom) {
         chatRoomRepository.deleteById(idchatroom);
@@ -43,4 +41,6 @@ public class ChatRoomService implements IChatRoomService{
     public ChatRoom retrieveChatRoom(String id) {
         return chatRoomRepository.findById(Long.parseLong(id)).get();
     }
+
+
 }

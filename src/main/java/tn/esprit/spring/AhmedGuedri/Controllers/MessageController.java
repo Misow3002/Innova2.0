@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Services.IMessageService;
-import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
 import tn.esprit.spring.AhmedGuedri.entities.Message;
 
 @AllArgsConstructor
@@ -15,7 +14,6 @@ import tn.esprit.spring.AhmedGuedri.entities.Message;
 public class MessageController {
     private IMessageService iMessageService;
     @GetMapping("/Retrieve-Messages/{id}")
-
     public Message RetrieveMessages(@PathVariable("id") Long Message) {
         return iMessageService.RetrieveMessages(Message);
     }

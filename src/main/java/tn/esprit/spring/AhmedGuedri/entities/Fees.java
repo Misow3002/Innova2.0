@@ -21,7 +21,7 @@ public class Fees implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idfees")
     private Long IdFees;
-    private Number Percent;
+    private int Percent;
     @Temporal(TemporalType.DATE)
     private Date DateFees;
 
