@@ -26,7 +26,7 @@ public class Fees implements Serializable {
     private Date DateFees;
 
     // Relation -->Fees
-    @ManyToOne
+    @OneToOne
     User userFees;
 }
 

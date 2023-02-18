@@ -22,6 +22,7 @@ public class Message implements Serializable {
     @Column(name="idmsg")
     private Long IdMsg;
     private String Text;
+    private boolean visibility;
     @Temporal(TemporalType.TIMESTAMP)
     private Date Sent ;
     private boolean Seen;

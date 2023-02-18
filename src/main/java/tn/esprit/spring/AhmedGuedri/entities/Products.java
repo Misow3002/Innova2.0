@@ -27,6 +27,9 @@ public class Products implements Serializable {
     private String RegionProducts;
     private boolean Available;
     private int NumberOfStock;
+    //enum annotation
+    @Enumerated(EnumType.STRING)
+    private ProductCategory Category;
     //Relation --> Inquiry
     @ManyToMany(mappedBy = "ProductList")
     List<Inquiry> InquiryList;
@@ -43,8 +46,5 @@ public class Products implements Serializable {
     @OneToMany(mappedBy = "feedbacksProd")
     List<Feedbacks> FeedbackList;
 
-    //Relation --> Orders
-    @ManyToOne
-    Orders Product_order;
 }
 
