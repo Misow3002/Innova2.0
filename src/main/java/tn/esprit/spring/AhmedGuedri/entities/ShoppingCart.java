@@ -1,31 +1,29 @@
+//implement entity class ShoppingCart
 package tn.esprit.spring.AhmedGuedri.entities;
 
-
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-public class Feedbacks implements Serializable {
+public class ShoppingCart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idfeedbacks")
-    private Long IdFeedBacks;
-    private int Stars;
-    @ManyToOne
-    Products feedbacksProd;
-
-    //Relation --> Feedobject
+    private Long Cart_Id;
+   //relation Product
+    @ManyToMany
+    private List<Products> productsList;
+    //Relation User
     @OneToOne
-    FeedObject feedObject;
-}
+    private User user;
 
+
+
+}

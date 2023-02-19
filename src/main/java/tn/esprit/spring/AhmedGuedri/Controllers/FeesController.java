@@ -15,13 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
      IFeesService iFeesService;
 
      @PostMapping("/addFees")
-     public Fees addFees(@RequestBody Fees fees){
-         return iFeesService.addFees(fees);
+     public Fees addFees(@RequestBody Fees fees,Long idUser){
+
+         return iFeesService.addFees(fees,idUser);
      }
 
      @PutMapping("/updateFees")
-     public Fees updateFees(@RequestBody Fees fees){
-         return iFeesService.updateFees(fees);
+     public Fees updateFees(@RequestBody Fees fees,Long idUser){
+         return iFeesService.updateFees(fees,idUser);
      }
 
      @DeleteMapping("/deleteFees/{idFees}")
@@ -38,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
      public Fees retrieveFees(@PathVariable("idFees") Long idFees){
          return iFeesService.retrieveFees(idFees);
      }
+
  }
 
 

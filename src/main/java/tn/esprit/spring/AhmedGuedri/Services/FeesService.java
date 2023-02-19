@@ -3,7 +3,8 @@ package tn.esprit.spring.AhmedGuedri.Services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.AhmedGuedri.Repositories.FeesRepository;
-import tn.esprit.spring.AhmedGuedri.entities.Fees;
+import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
+import tn.esprit.spring.AhmedGuedri.entities.*;
 import java.util.List;
 
 
@@ -12,17 +13,21 @@ import java.util.List;
 public class FeesService implements IFeesService{
     //implementing the methods of the interface with the help of the repository
     FeesRepository feesRepository;
-
+UserRepository userRepository;
     @Override
-    public Fees addFees(Fees fees) {
+    public Fees addFees(Fees fees,Long idUser) {
         // TODO Auto-generated method stub
-
-        feesRepository.save(fees);
-        return fees;
+        User u= userRepository.findById(idUser).get();
+        fees.setUserFees(u);
+        System.out.println(fees.getIdFees());
+        System.out.println(fees.getUserFees());
+        return  feesRepository.save(fees);
     }
 
     @Override
-    public Fees updateFees(Fees fees) {
+    public Fees updateFees(Fees fees,Long idUser) {
+        User u =userRepository.findById(idUser).get();
+        fees.setUserFees(u);
         feesRepository.save(fees);
         return fees;
     }
