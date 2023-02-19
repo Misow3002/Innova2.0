@@ -35,5 +35,15 @@ public class Orders implements Serializable {
     //Relation -->Invoices
     @OneToOne
     Invoices OrdersInvoice;
+    //Relation-->ShoppingCart
+    @OneToOne
+    ShoppingCart shoppingCart;
+    //Relation Product
+    @ManyToMany
+    private List<Products> productsList;
+
+
+
+
 }
 

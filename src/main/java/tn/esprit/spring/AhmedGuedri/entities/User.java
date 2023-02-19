@@ -32,6 +32,7 @@ public class User implements Serializable {
     //Anti Bot + PWD Recover
     private Long Token;
     private Long PhoneNumber;
+    private String Img_URL;
     private boolean Disabled;
     private String Country;
 //Relation Messages
@@ -42,9 +43,10 @@ public class User implements Serializable {
     //Relation PWD
     @OneToOne
     HashedPWD hashedPWD;
-    //Relation Fees
-    @OneToMany(mappedBy = "userFees")
-    List<Fees> FeesList;
+    //Relation fees
+    @OneToOne
+    Fees fees;
+
     //Relation Inquiry
     @OneToMany(mappedBy = "userInquiries")
     List<Inquiry> InquiryList;
@@ -54,6 +56,9 @@ public class User implements Serializable {
     //Relation Orders
     @OneToMany(cascade = CascadeType.ALL)
     List<Orders> User_orders;
+    @OneToOne
+    ShoppingCart shoppingCart;
+
 
 }
 

@@ -22,11 +22,14 @@ public class Inquiry implements Serializable {
     @Column(name="idinquiry")
     private Long IdInquiry;
     private String Description;
+    private String Status;
+    //enum product category
+    @Enumerated(EnumType.STRING)
+    private ProductCategory Category;
     @Temporal(TemporalType.TIMESTAMP)
     private Date CreateDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date ExpireDate;
-    private boolean Status;
     //Relation-->User
     @ManyToOne
     User userInquiries;
