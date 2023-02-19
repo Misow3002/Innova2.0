@@ -35,6 +35,7 @@ public class CurrencyController {
     public Currency retrieveCurrency(@PathVariable("Currency-id") String id) {
         return ics.retrieveCurrency(id);
     }
+    }
 }
 
 
