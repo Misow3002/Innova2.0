@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.AhmedGuedri.Repositories.CurrencyRepository;
 import tn.esprit.spring.AhmedGuedri.entities.Currency;
+import tn.esprit.spring.AhmedGuedri.entities.CurrencyType;
+
 @Service
 public class CurrencyServiceImpl implements ICurrencyService {
     @Autowired
@@ -21,7 +21,7 @@ public class CurrencyServiceImpl implements ICurrencyService {
         List<Currency> currencies = (List<Currency>) currencyRepository.findAll();
         return currencies;
     }
-    public Currency getCurrencyByName(String CurrencyType) {
+    public Currency getCurrencyByName(CurrencyType CurrencyType) {
         return currencyRepository.findByCurrencyType(CurrencyType);
     }
 
@@ -43,24 +43,69 @@ public class CurrencyServiceImpl implements ICurrencyService {
     public Currency retrieveCurrency(String id) {
         return currencyRepository.findById(Long.parseLong(id)).get();
     }
-    private static final String CURRENCY_RATES_URL = "https://example.com/currency-rates";
+    @Override
     @Scheduled(fixedRate = 3600000) // run every hour
     public void updateCurrencyRates() {
         try {
-            Document doc = Jsoup.connect(CURRENCY_RATES_URL).get();
-            Elements elements = doc.select("table tr");
-            for (Element element : elements) {
-                String name = element.select("td:nth-child(1)").text();
-                String rateText = element.select("td:nth-child(2)").text();
-                Float rate = Float.parseFloat(rateText);
-                Currency currency = currencyRepository.findByCurrencyType(name);
-                currency.setExchangeRate(rate);
-                currencyRepository.save(currency);
+            List<Currency> currencies =currencyRepository.findAll();
+            for (Currency currency : currencies) {
+                CurrencyType name = currency.getCurrencyType();
+                System.out.println("name"+name);
+                String namec= String.valueOf(name);
+                System.out.println("namec"+namec);
+                String url = "https://www.xe.com/currencyconverter/convert/?Amount=1&From="+namec.toUpperCase()+"&To=TND";
+                System.out.println("URL  "+url);
+                Document doc = Jsoup.connect(url).get();
+                //System.out.println("Doc  "+doc);
+
+
+// Select the <p> element with the given class and get its text content
+                String pText = doc.select("p.result__BigRate-sc-1bsijpp-1.iGrAod").text();
+
+// Extract the first 4 characters of the text content (which contain the rate)
+                String rateStr = pText.substring(0, 4);
+
+// Convert the rate to a double
+                double rate = Double.parseDouble(rateStr);
+                System.out.println("taaditt  ");
+                System.out.println("rate "+rate);
+                Currency cur = currencyRepository.findByCurrencyType(name);
+                cur.setExchangeRate((float) rate);
+                currencyRepository.save(cur);
+                /*currency.setExchangeRate((float) rate);
+                currencyRepository.save(currency);*/
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    @Override
+    public void updateCurrencyRatesnow() {
+        try {
+            List<Currency> currencies = currencyRepository.findAll();
+            for (Currency currency : currencies) {
+                CurrencyType name = currency.getCurrencyType();
+                System.out.println("name"+name);
+                String namec= String.valueOf(name);
+                System.out.println("namec"+namec);
+                String url = "https://www.xe.com/currencyconverter/convert/?Amount=1&From="+namec.toUpperCase()+"&To=TND";
+                Document doc = Jsoup.connect(url).get();
+                String rate = doc.select(".uccResultAmount").first().text();
+                System.out.println("rate"+rate);
+                Currency cur = currencyRepository.findByCurrencyType(name);
+                cur.setExchangeRate(Float.valueOf(rate));
+                currencyRepository.save(cur);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
 
 }
 

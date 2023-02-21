@@ -1,33 +1,33 @@
 package tn.esprit.spring.AhmedGuedri.Controllers;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Services.ICurrencyService;
 import tn.esprit.spring.AhmedGuedri.entities.Currency;
+@AllArgsConstructor
 @RestController
+@RequestMapping("/currency")
+@NoArgsConstructor
 public class CurrencyController {
     @Autowired
     ICurrencyService ics;
-    @GetMapping("/retrieve-all-Currencies")
+    @GetMapping("/all")
     public List<Currency> getCurrencies() {
         List<Currency> list = ics.retrieveAllCurrencies();
         return list;
     }
-    @PostMapping("/add-Currency")
+    @PostMapping("/add")
     public Currency addCurrency(@RequestBody Currency c) {
         return ics.addCurrency(c);
     }
-    @DeleteMapping("/remove-Currency/{Currency-id}")
+    @DeleteMapping("/remove/{Currency-id}")
     public void removeCurrency(@PathVariable("Currency-id") String id) {
         ics.deleteCurrency(id);
     }
-    @PutMapping("/modify-Currency")
+    @PutMapping("/modify")
     public Currency modifyCurrency(@RequestBody Currency c) {
         return ics.updateCurrency(c);
     }
@@ -35,7 +35,10 @@ public class CurrencyController {
     public Currency retrieveCurrency(@PathVariable("Currency-id") String id) {
         return ics.retrieveCurrency(id);
     }
+    @PostMapping("/updatecurrates")
+    public void updateexchangerate() {ics.updateCurrencyRatesnow();
     }
-}
+    }
+
 
 
