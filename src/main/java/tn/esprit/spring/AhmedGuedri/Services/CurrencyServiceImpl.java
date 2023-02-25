@@ -1,5 +1,9 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -70,6 +74,8 @@ public class CurrencyServiceImpl implements ICurrencyService {
                 System.out.println("taaditt  ");
                 System.out.println("rate "+rate);
                 Currency cur = currencyRepository.findByCurrencyType(name);
+                Date dt=Date.from((LocalDateTime.now()).atZone(ZoneId.systemDefault()).toInstant());
+                cur.setDateC(dt);
                 cur.setExchangeRate((float) rate);
                 currencyRepository.save(cur);
                 /*currency.setExchangeRate((float) rate);
@@ -82,19 +88,35 @@ public class CurrencyServiceImpl implements ICurrencyService {
     @Override
     public void updateCurrencyRatesnow() {
         try {
-            List<Currency> currencies = currencyRepository.findAll();
+            List<Currency> currencies =currencyRepository.findAll();
             for (Currency currency : currencies) {
                 CurrencyType name = currency.getCurrencyType();
                 System.out.println("name"+name);
                 String namec= String.valueOf(name);
                 System.out.println("namec"+namec);
                 String url = "https://www.xe.com/currencyconverter/convert/?Amount=1&From="+namec.toUpperCase()+"&To=TND";
+                System.out.println("URL  "+url);
                 Document doc = Jsoup.connect(url).get();
-                String rate = doc.select(".uccResultAmount").first().text();
-                System.out.println("rate"+rate);
+                //System.out.println("Doc  "+doc);
+
+
+// Select the <p> element with the given class and get its text content
+                String pText = doc.select("p.result__BigRate-sc-1bsijpp-1.iGrAod").text();
+
+// Extract the first 4 characters of the text content (which contain the rate)
+                String rateStr = pText.substring(0, 4);
+
+// Convert the rate to a double
+                double rate = Double.parseDouble(rateStr);
+                System.out.println("taaditt  ");
+                System.out.println("rate "+rate);
                 Currency cur = currencyRepository.findByCurrencyType(name);
-                cur.setExchangeRate(Float.valueOf(rate));
+                Date dt=Date.from((LocalDateTime.now()).atZone(ZoneId.systemDefault()).toInstant());
+                cur.setDateC(dt);
+                cur.setExchangeRate((float) rate);
                 currencyRepository.save(cur);
+                /*currency.setExchangeRate((float) rate);
+                currencyRepository.save(currency);*/
             }
         } catch (IOException e) {
             e.printStackTrace();
