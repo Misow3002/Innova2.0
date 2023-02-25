@@ -25,8 +25,7 @@ public class Delivery implements Serializable {
     private Date StarDate ;
     @Temporal(TemporalType.DATE)
     private Date EndDate ;
-    @Enumerated(EnumType.STRING)
-    private StatusType StatusType;
+
 
     @OneToMany (mappedBy = "delivery")
     List<Orders> OrdersList;

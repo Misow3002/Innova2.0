@@ -21,19 +21,32 @@ public class Orders implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idorders")
     private Long IdOrders;
-    private OrdersType StatusOrders;
+    @Enumerated(EnumType.STRING)
+    private Order_Status orderStatus;
+    @Enumerated(EnumType.STRING)
+    private Payment_method paymentMethod;
+    private String adress;
     @Temporal(TemporalType.TIMESTAMP)
     private Date BroughtDate;
-    private boolean Confirmation;
+    private float product_cost;
+    private float tax;
+    private float total;
+
+    //relation avec user
+    @ManyToOne
+    User user;
+
+    //Relation -->Invoices
+    @OneToOne
+    Invoices OrdersInvoice;
+
+
     //Delivery
     @ManyToOne
     Delivery delivery;
 
     //Relation Payment
-    @OneToOne
-    Payement payment;
-    //Relation -->Invoices
-    @OneToOne
-    Invoices OrdersInvoice;
+
+
 }
 
