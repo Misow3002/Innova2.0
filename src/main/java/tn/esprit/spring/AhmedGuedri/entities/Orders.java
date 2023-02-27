@@ -34,6 +34,7 @@ public class Orders implements Serializable {
     //relation avec user
     @ManyToOne
     User user;
+<<<<<<< HEAD
 
     //Relation -->Invoices
     @OneToOne
@@ -48,6 +49,18 @@ public class Orders implements Serializable {
     @OneToOne
     Payment payment;
 
+=======
+
+    //Relation -->Invoices
+    @OneToOne
+    Invoices OrdersInvoice;
+
+
+    //Delivery
+    @ManyToOne
+    Delivery delivery;
+
+>>>>>>> 096238298958478fc361a260c45ae5c7c3cd8c2c
     //Relation Payment
 
 

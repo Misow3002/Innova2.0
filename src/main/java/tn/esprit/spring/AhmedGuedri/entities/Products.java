@@ -28,6 +28,25 @@ public class   Products implements Serializable {
     private boolean Available;
     private int NumberOfStock;
 
+<<<<<<< HEAD
+=======
+    //Relation avec panier
+    @ManyToOne(cascade = CascadeType.ALL)
+    Panier panier;
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 096238298958478fc361a260c45ae5c7c3cd8c2c
 
 
     //Relation --> Inquiry
