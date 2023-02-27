@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Products implements Serializable {
+public class   Products implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idproducts")
@@ -27,6 +27,9 @@ public class Products implements Serializable {
     private String RegionProducts;
     private boolean Available;
     private int NumberOfStock;
+
+
+
     //Relation --> Inquiry
     @ManyToMany(mappedBy = "ProductList")
     List<Inquiry> InquiryList;
@@ -37,14 +40,10 @@ public class Products implements Serializable {
     @ManyToMany
     List<Currency> CurrencyList;
     //Relation --> Tax
-    @ManyToOne
-    Tax tax;
-    //Relation --> Feedbacks
+
     @OneToMany(mappedBy = "feedbacksProd")
     List<Feedbacks> FeedbackList;
 
-    //Relation --> Orders
-    @ManyToOne
-    Orders Product_order;
+
 }
 

@@ -1,5 +1,5 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
-public enum PaymentType {
-    CreditCard,Cash
+public enum Payment_method {
+    CASH,CREDIT_CART
 }

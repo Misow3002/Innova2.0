@@ -10,12 +10,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+//mahdi
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,9 +50,11 @@ public class User implements Serializable {
     //Relation Product
     @ManyToMany(mappedBy = "userProducts")
     List<Products> ProductList;
-    //Relation Orders
-    @ManyToOne
-    Orders User_order;
+
+    //relation avec order
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    private Set<Orders> orders;
+
 
 }
 

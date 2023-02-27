@@ -9,7 +9,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,19 +20,36 @@ public class Orders implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idorders")
     private Long IdOrders;
-    private OrdersType StatusOrders;
+    @Enumerated(EnumType.STRING)
+    private Order_Status orderStatus;
+    @Enumerated(EnumType.STRING)
+    private Payment_method paymentMethod;
+    private String adress;
     @Temporal(TemporalType.TIMESTAMP)
     private Date BroughtDate;
-    private boolean Confirmation;
-    //Delivery
-    @ManyToOne
-    Delivery delivery;
+    private float product_cost;
+    private float tax;
+    private float total;
 
-    //Relation Payment
-    @OneToOne
-    Payement payment;
+    //relation avec user
+    @ManyToOne
+    User user;
+
     //Relation -->Invoices
     @OneToOne
     Invoices OrdersInvoice;
+
+
+    //Delivery
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Panier_id")
+    Panier panier;
+
+    @OneToOne
+    Payment payment;
+
+    //Relation Payment
+
+
 }
 
