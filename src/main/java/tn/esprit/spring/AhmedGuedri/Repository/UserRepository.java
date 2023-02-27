@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
 @Repository
-public interface UserRepo extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 }
