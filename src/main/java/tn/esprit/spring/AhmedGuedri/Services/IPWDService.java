@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IPWDService {
      void AssignPasswordToUser(User u,String password); // Assign Password To User
-     void EditPassword(User u,String password); // Update Password
-     Date RetievePasswordInfo(User u); // Retrieve User Expiration dATE
+     String EditPassword(String Email,String password1,String password2); // Update Password
+     String RetievePasswordInfo(String email); // Retrieve User Expiration dATE
 
 
 }

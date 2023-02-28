@@ -13,13 +13,13 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class PWDService implements IPWDService{
+public class PWDService implements IPWDService {
     UserRepository userRepository;
     PWDRepository pwdRepository;
 
 
     @Override
-    public void AssignPasswordToUser(User u,String password) {
+    public void AssignPasswordToUser(User u, String password) {
         HashedPWD newUserPass = new HashedPWD();
         Date date = new Date();
         newUserPass.setPassword(password);
@@ -31,21 +31,28 @@ public class PWDService implements IPWDService{
     }
 
     @Override
-    public void EditPassword(User u,String password) {
-        User user = userRepository.findById(u.getId()).get();
+    public String EditPassword (String Email,String PrevPassword,String NewPassword){
+        User user = userRepository.findByEmailEquals(Email);
+        System.out.println(user);
         Date datenow = new Date();
-        if (user.isDisabled()) {
-            HashedPWD pass = pwdRepository.findById(u.getId()).get();
+        if (user.isEnabled()==false) {
+            HashedPWD pass = pwdRepository.findById(user.getHashedPWD().getPassId()).get();
+            System.out.println(pass);
             long diff = datenow.getTime() - pass.getChangeDate().getTime();
-            if ((diff / (24 * 60 * 60 * 1000) <= 14)) {
-                System.out.printf("Password Changed");
-                pass.setPassword(password);
-                pass.setChangeDate(datenow);
-                pwdRepository.save(pass);
-            }
-            else
+            if( ((diff / (24 * 60 * 60 * 1000) <= 14))){
+                if (PrevPassword.equals(pass.getPassword())) {
+                    System.out.println(PrevPassword);
+                    System.out.println(NewPassword);
+                    System.out.printf("Password Changed");
+                    pass.setPassword(NewPassword);
+                    pass.setChangeDate(datenow);
+                    pwdRepository.save(pass);
+                } else
+                    System.out.println("Wrong Password");
+            } else
                 System.out.println("Password Date Not yet Expired");
         }
+        return "Password Changed";
     }
 //            HashedPWD newUserPass = new HashedPWD();
 //            Date date = new Date();
@@ -56,7 +63,9 @@ public class PWDService implements IPWDService{
 
 
     @Override
-    public Date RetievePasswordInfo(User u) {
-        return pwdRepository.findByUser(u).getChangeDate();
+    public String RetievePasswordInfo(String email) {
+        User u=userRepository.findByEmailEquals(email);
+        System.out.println("el user :"+u);
+        return pwdRepository.findByUser(u).getChangeDate().toString();
     }
 }

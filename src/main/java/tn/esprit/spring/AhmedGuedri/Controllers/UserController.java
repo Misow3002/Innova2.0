@@ -1,8 +1,12 @@
 package tn.esprit.spring.AhmedGuedri.Controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Services.IPWDService;
 import tn.esprit.spring.AhmedGuedri.Services.IUserService;
@@ -14,42 +18,50 @@ import java.util.Date;
 @RestController
 @RequestMapping("/user/")
 public class UserController {
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
     private IUserService iUserService;
     private IPWDService ipwdService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @PostMapping("addUser")
     public ResponseEntity<User> addUser(@RequestBody User u,String Password) {
 
         if (!Password.isEmpty()) {
             iUserService.addUser(u);
-            ipwdService.AssignPasswordToUser(u, Password);
+            ipwdService.AssignPasswordToUser(u, passwordEncoder.encode(Password));
         }
         return new ResponseEntity<User>(HttpStatus.CREATED);
     }
 
     @PutMapping("/updateUser")
-    public ResponseEntity<User> updateUser(@RequestBody User u,String Password) {
+    public String updateUser(@RequestBody User u,String Password) {
 
-         iUserService.updateUser(u);
+        return iUserService.updateUser(u);
 
 
 
-        if (Password.length()>7)
-        ipwdService.AssignPasswordToUser(u,Password);
-        return new ResponseEntity<User>(HttpStatus.CREATED);
+        //if (Password.length()>7)
+        //return ipwdService.EditPassword(u.,Password);
+
+
+
 
     }
 
 
     @DeleteMapping("/deleteUser")
-    public ResponseEntity<User> deleteUser(@RequestBody User u) {
-        iUserService.deleteUser(u);
-        return new ResponseEntity<User>(HttpStatus.ACCEPTED);
+    public ResponseEntity<User> deleteUser(@RequestParam String email) {
+        iUserService.deleteUser(email);
+        return new ResponseEntity<User>(HttpStatus.OK);
 
     }
     //implementing the method RetievePasswordInfo
     @GetMapping("/RetievePasswordInfo")
-    public ResponseEntity<String> RetievePasswordInfo(@RequestBody User u) {
-        return new ResponseEntity<String>(ipwdService.RetievePasswordInfo(u),HttpStatus.OK);
+    public String RetievePasswordInfo(@RequestParam String email) {
+        return ipwdService.RetievePasswordInfo(email);
 
     }
 }

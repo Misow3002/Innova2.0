@@ -8,8 +8,8 @@ public interface IUserService {
 
     List<User> retrieveAllUsers();
      void addUser(User u); // Add User
-     void updateUser(User u); // Update User
-     void deleteUser(User u); // Delete User
+     String updateUser(User u); // Update User
+     void deleteUser(String Email); // Delete User
 
 
 }
