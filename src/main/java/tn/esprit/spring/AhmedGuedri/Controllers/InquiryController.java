@@ -36,5 +36,16 @@ import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
      public Inquiry retrieveInquiry(@PathVariable("Inquiry-id") String id) {
          return iis.retrieveInquiry(id);
      }
+        @PutMapping("/clear-Inquiry/{Inquiry-id}")
+        public void clearInquiry(@PathVariable("Inquiry-id") String id) {
+            iis.clearInquiry(id);
  }
+        @PutMapping("/remove-product-from-Inquiry-empty/{Inquiry-id}")
+        public void removeProductFromInquiry(@PathVariable("Inquiry-id") String id) {
+            iis.removeProductFromInquiry(id);
+ }
+
+ 
+
+}
 

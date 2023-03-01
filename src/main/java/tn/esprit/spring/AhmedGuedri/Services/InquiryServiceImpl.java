@@ -31,4 +31,21 @@ public class InquiryServiceImpl implements IInquiryService {
     public Inquiry retrieveInquiry(String id) {
         return inquiryRepository.findById(Long.parseLong(id)).get();
     }
+    //clear products from inquiry
+    @Override
+    public void clearInquiry(String id) {
+        Inquiry inquiry = retrieveInquiry(id);
+        inquiry.setProductList(null);
+        updateInquiry(inquiry);
+    }
+ 
+    //remove products from inquiry when product stock is 0
+    @Override
+    public void removeProductFromInquiry(String id) {
+        Inquiry inquiry = retrieveInquiry(id);
+        inquiry.getProductList().removeIf(p -> p.getNumberOfStock() == 0);
+        updateInquiry(inquiry);
+    }
+
+
 }

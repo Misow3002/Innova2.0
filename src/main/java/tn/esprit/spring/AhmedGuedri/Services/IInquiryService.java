@@ -9,5 +9,9 @@ public interface IInquiryService {
     public void deleteInquiry(String id);
     public Inquiry updateInquiry(Inquiry i);
     public Inquiry retrieveInquiry(String id);
+    public void clearInquiry(String id);
+    public void removeProductFromInquiry(String id);
+    
+
 
 }
