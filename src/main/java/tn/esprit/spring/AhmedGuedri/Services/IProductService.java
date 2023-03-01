@@ -1,5 +1,6 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
+import org.springframework.mail.javamail.JavaMailSender;
 import tn.esprit.spring.AhmedGuedri.entities.DetailedOrders;
 import tn.esprit.spring.AhmedGuedri.entities.Products;
 
@@ -14,4 +15,8 @@ public interface IProductService {
     void addOrUpdatedetailedOrders();
 
     List<DetailedOrders> getDetailedOrdersbyDaterange(Date startdate, Date enddate, Long supplier);
+
+    String getStatisticsbyDaterange(Date startdate, Date enddate, Long Supplier);
+
+    void sendEmail(JavaMailSender javaMailSender, String toEmail, String subject, String message);
 }

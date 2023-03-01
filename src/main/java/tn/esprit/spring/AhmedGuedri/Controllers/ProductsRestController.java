@@ -2,6 +2,7 @@ package tn.esprit.spring.AhmedGuedri.Controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Services.IProductService;
 import tn.esprit.spring.AhmedGuedri.entities.DetailedOrders;
@@ -34,6 +35,13 @@ public class ProductsRestController {
     void deleteStudent(@PathVariable("id") Long IdProduct){
         productService.removeProduct(IdProduct);
     }
-
+    @GetMapping("/order/get/{dates}/{datee}/{id}")
+    List<DetailedOrders> getDetailedOrdersbyDaterange(@PathVariable("dates")@DateTimeFormat(pattern="yyyy-MM-dd") Date dates, @PathVariable("datee")@DateTimeFormat(pattern="yyyy-MM-dd") Date datee, @PathVariable("id") Long id){
+        return productService.getDetailedOrdersbyDaterange(dates,datee,id);
+    }
+    @GetMapping("/order/getstats/{dates}/{datee}/{id}")
+    String getDetailedOrdersbyDaterangeStats(@PathVariable("dates")@DateTimeFormat(pattern="yyyy-MM-dd") Date dates, @PathVariable("datee")@DateTimeFormat(pattern="yyyy-MM-dd") Date datee, @PathVariable("id") Long id){
+        return productService.getStatisticsbyDaterange(dates,datee,id);
+    }
 
 }
