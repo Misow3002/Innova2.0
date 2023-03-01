@@ -25,10 +25,9 @@ public class Delivery implements Serializable {
     private Date StarDate ;
     @Temporal(TemporalType.DATE)
     private Date EndDate ;
-<<<<<<< HEAD
-=======
 
->>>>>>> 096238298958478fc361a260c45ae5c7c3cd8c2c
+
+
 
 
 }

@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.AhmedGuedri.Repository.OrderRepo;
 import tn.esprit.spring.AhmedGuedri.Repository.PanierRepo;
-import tn.esprit.spring.AhmedGuedri.entities.Order_Status;
-import tn.esprit.spring.AhmedGuedri.entities.Orders;
-import tn.esprit.spring.AhmedGuedri.entities.Panier;
-import tn.esprit.spring.AhmedGuedri.entities.Payment_method;
+import tn.esprit.spring.AhmedGuedri.Repository.ProductRepo;
+import tn.esprit.spring.AhmedGuedri.entities.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +16,8 @@ public class OrderService implements IOrderService {
     OrderRepo orderRepo;
     @Autowired
     PanierRepo panierRepo;
+    @Autowired
+    ProductRepo productRepo;
 
     @Override
     public List<Orders> retrieveAllOrders() {
@@ -53,5 +53,12 @@ public class OrderService implements IOrderService {
             orderRepo.save(order);
 
         return order;
+    }
+    @Override
+    public Float TotalOrdersTVA (Long orderId){
+        Orders order = orderRepo.findById(orderId).orElse(null);
+        float total = 0;
+        total = (float) ((order.getPanier().getTotalPrice()*order.getTax())+ order.getPanier().getTotalPrice());
+        return total;
     }
 }

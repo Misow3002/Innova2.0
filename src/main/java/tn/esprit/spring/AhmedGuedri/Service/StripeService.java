@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import tn.esprit.spring.AhmedGuedri.Repository.OrderRepo;
+import tn.esprit.spring.AhmedGuedri.Repository.PanierRepo;
 import tn.esprit.spring.AhmedGuedri.Repository.PaymentRepository;
 import tn.esprit.spring.AhmedGuedri.Repository.UserRepository;
 import tn.esprit.spring.AhmedGuedri.entities.Orders;
+import tn.esprit.spring.AhmedGuedri.entities.Panier;
 import tn.esprit.spring.AhmedGuedri.entities.Payment;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
@@ -27,6 +29,7 @@ public class StripeService {
     UserRepository userRepository;
     @Autowired
     OrderRepo orderRepository;
+
     @Autowired
     private PaymentRepository paymentRepository;
     @Autowired
@@ -52,10 +55,11 @@ public class StripeService {
     public double createCharge(String token, Long idUser, Long idOrders) throws StripeException {
         Optional<User> user = userRepository.findById(idUser);
         Orders orders = orderRepository.findById(idOrders).get();
+
         String id;
         Stripe.apiKey = stripeKey;
         Map<String, Object> chargeParams = new HashMap<>();
-        chargeParams.put("amount", Math.round(orders.getPanier().getTotalPrice()* 100));
+        chargeParams.put("amount", Math.round(serviceOder.TotalOrdersTVA(idOrders)));
         chargeParams.put("currency", "usd");
         chargeParams.put("source", token); // ^ obtained with Stripe.js
         //create a charge
@@ -72,7 +76,7 @@ public class StripeService {
         paymentRepository.save(payment);
          // mailService.sendEmail(email, "Thank you for your purchase !", "thank");
         // payment successfully
-        return orders.getPanier().getTotalPrice();
+        return serviceOder.TotalOrdersTVA(idOrders);
     }
 
 

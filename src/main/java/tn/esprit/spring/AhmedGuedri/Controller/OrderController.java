@@ -63,7 +63,7 @@ public class OrderController {
     public Orders addPanierToOrder(@PathVariable Long idpanier,@PathVariable Long idOrders ){
         return orderService.addPanierToOrder(idpanier,idOrders);
     }
-    //http://localhost:8083/ratatoskr/Orders/stripe/token/1/1
+    //http://localhost:8083/ratatoskr/Order/stripe/token/1/1
     @PostMapping("/stripe/{token}/{idUser}/{idOrders}")
     @ResponseBody
     public double createCharge(@PathVariable String token, @PathVariable Long idUser, @PathVariable Long idOrders) throws StripeException  {

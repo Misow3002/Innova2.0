@@ -17,4 +17,5 @@ public interface IOrderService {
     Orders retrieveOrders(Long id);
 
     Orders addPanierToOrder(Long panierId, Long orderId);
+    public Float TotalOrdersTVA (Long orderId);
 }
