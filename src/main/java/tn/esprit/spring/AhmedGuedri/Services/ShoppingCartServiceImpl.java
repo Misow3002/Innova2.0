@@ -64,6 +64,23 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         shoppingCart.setUser(shoppingCartRepository.retrieveUserById(Long.parseLong(idUser)));
         return shoppingCartRepository.save(shoppingCart);
     }
+//add product to shopping cart
+    @Override
+    public void addProductToShoppingCart(String id, String idProduct) {
+        ShoppingCart shoppingCart = retrieveShoppingCart(id);
+        shoppingCart.getProductsList().add(shoppingCartRepository.retrieveProductById(Long.parseLong(idProduct)));
+        updateShoppingCart(shoppingCart);
+    }
+//get total price of shopping cart
+    @Override
+    public float getTotalPriceShoppingCart(String id) {
+        ShoppingCart shoppingCart = retrieveShoppingCart(id);
+        float totalPrice = 0;
+        for (int i = 0; i < shoppingCart.getProductsList().size(); i++) {
+            totalPrice += shoppingCart.getProductsList().get(i).getPrice();
+        }
+        return totalPrice;
+    }
 
 
 }

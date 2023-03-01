@@ -15,6 +15,8 @@ public interface IShoppingCartService {
     void removeProductFromShoppingCart(String id, String idProduct);
     ShoppingCart retrieveShoppingCartByUser(String idUser);
     ShoppingCart createShoppingCartByUser(String idUser);
+    void addProductToShoppingCart(String id, String idProduct);
+    float getTotalPriceShoppingCart(String id);
     
 
 
