@@ -40,10 +40,17 @@ import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
         public void clearInquiry(@PathVariable("Inquiry-id") String id) {
             iis.clearInquiry(id);
  }
+ 
         @PutMapping("/remove-product-from-Inquiry-empty/{Inquiry-id}")
         public void removeProductFromInquiry(@PathVariable("Inquiry-id") String id) {
             iis.removeProductFromInquiry(id);
  }
+ @PutMapping("/add-product-to-Inquiry/{Inquiry-id}/{product-id}")
+    public void addProductToInquiry(@PathVariable("Inquiry-id") String id,
+            @PathVariable("product-id") String productId) {
+        iis.addProductToInquiry(id, productId);
+    }
+
 
  
 

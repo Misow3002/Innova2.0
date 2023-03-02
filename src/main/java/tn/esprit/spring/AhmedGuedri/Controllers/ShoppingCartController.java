@@ -58,16 +58,22 @@ public class ShoppingCartController {
             @PathVariable("product-id") String productId) {
         shoppingCartService.removeProductFromShoppingCart(shoppingCartId, productId);
     }
-
-    @GetMapping("/retrieve-shoppingCart-by-user/{user-id}")
-    public ShoppingCart retrieveShoppingCartByUser(@PathVariable("user-id") String userId) {
-        return shoppingCartService.retrieveShoppingCartByUser(userId);
+    @PutMapping("/add-product-to-shoppingCart/{shoppingCart-id}/{product-id}")
+    public void addProductToShoppingCart(@PathVariable("shoppingCart-id") String shoppingCartId,
+            @PathVariable("product-id") String productId) {
+        shoppingCartService.addProductToShoppingCart(shoppingCartId, productId);
     }
-
-    @GetMapping("/create-shoppingCart-by-user/{user-id}")
-    public ShoppingCart createShoppingCartByUser(@PathVariable("user-id") String userId) {
-        return shoppingCartService.createShoppingCartByUser(userId);
+    @PutMapping("/create-shoppingCart-for-user/{user-id}")
+    public void createShoppingCartForUser(@PathVariable("user-id") String userId) {
+        shoppingCartService.createShoppingCartForUser(userId);
     }
+    
+
+    
+
+ 
+
+
 
 
 

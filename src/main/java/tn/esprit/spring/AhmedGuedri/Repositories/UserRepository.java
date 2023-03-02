@@ -6,4 +6,6 @@ import tn.esprit.spring.AhmedGuedri.entities.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
+    User findByEmailEquals(String email);
+
 }

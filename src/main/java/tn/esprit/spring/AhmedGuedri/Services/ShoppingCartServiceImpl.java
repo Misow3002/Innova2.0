@@ -2,12 +2,18 @@ package tn.esprit.spring.AhmedGuedri.Services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
 import tn.esprit.spring.AhmedGuedri.Repositories.ShoppingCartRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
 import tn.esprit.spring.AhmedGuedri.entities.ShoppingCart;
+import tn.esprit.spring.AhmedGuedri.entities.User;
 @Service
 
 public class ShoppingCartServiceImpl implements IShoppingCartService {
     @Autowired
+    ProductsRepository productsRepository;
+    UserRepository userRepository;
     ShoppingCartRepository shoppingCartRepository;
     @Override
     public List<ShoppingCart> retrieveAllShoppingCarts() {
@@ -52,23 +58,12 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         updateShoppingCart(shoppingCart);
     }
 
-//get shopping cart by user
-    @Override
-    public ShoppingCart retrieveShoppingCartByUser(String idUser) {
-        return shoppingCartRepository.retrieveShoppingCartByUser(Long.parseLong(idUser));
-    }
-//create shopping cart by user
-    @Override
-    public ShoppingCart createShoppingCartByUser(String idUser) {
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(shoppingCartRepository.retrieveUserById(Long.parseLong(idUser)));
-        return shoppingCartRepository.save(shoppingCart);
-    }
+
 //add product to shopping cart
     @Override
     public void addProductToShoppingCart(String id, String idProduct) {
         ShoppingCart shoppingCart = retrieveShoppingCart(id);
-        shoppingCart.getProductsList().add(shoppingCartRepository.retrieveProductById(Long.parseLong(idProduct)));
+        shoppingCart.getProductsList().add(productsRepository.findById(Long.parseLong(idProduct)).get());
         updateShoppingCart(shoppingCart);
     }
 //get total price of shopping cart
@@ -81,6 +76,16 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         }
         return totalPrice;
     }
+  //create a shopping cart for every user created
+    @Override
+    public void createShoppingCartForUser(String id) {
+        User u = userRepository.findByEmailEquals(id);
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(u);
+        addShoppingCart(shoppingCart);
+    }
+
+
 
 
 }

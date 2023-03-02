@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.AhmedGuedri.Repositories.InquiryRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
+import tn.esprit.spring.AhmedGuedri.Services.ProductService;
 import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
+import tn.esprit.spring.AhmedGuedri.entities.Products;
 @Service
 
 public class InquiryServiceImpl implements IInquiryService {
     @Autowired
     InquiryRepository inquiryRepository;
+    ProductService productService;
     @Override
     public List<Inquiry> retrieveAllInquiries() {
         List<Inquiry> inquiries = (List<Inquiry>) inquiryRepository.findAll();
@@ -31,6 +35,15 @@ public class InquiryServiceImpl implements IInquiryService {
     public Inquiry retrieveInquiry(String id) {
         return inquiryRepository.findById(Long.parseLong(id)).get();
     }
+
+    //add product to inquiry
+    @Override
+    public void addProductToInquiry(String id, String productId) {
+        Products p = productService.getProduct(Long.parseLong(productId));
+        Inquiry inquiry = retrieveInquiry(id);
+        inquiry.getProductList().add(p);
+        updateInquiry(inquiry);
+    }
     //clear products from inquiry
     @Override
     public void clearInquiry(String id) {
@@ -38,6 +51,7 @@ public class InquiryServiceImpl implements IInquiryService {
         inquiry.setProductList(null);
         updateInquiry(inquiry);
     }
+
  
     //remove products from inquiry when product stock is 0
     @Override
@@ -45,6 +59,7 @@ public class InquiryServiceImpl implements IInquiryService {
         Inquiry inquiry = retrieveInquiry(id);
         inquiry.getProductList().removeIf(p -> p.getNumberOfStock() == 0);
         updateInquiry(inquiry);
+        
     }
 
 

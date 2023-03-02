@@ -28,7 +28,7 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private Roles Roles;
     private String Adress;
-    private String Email;
+    private String email;
     //Anti Bot + PWD Recover
     private Long Token;
     private Long PhoneNumber;

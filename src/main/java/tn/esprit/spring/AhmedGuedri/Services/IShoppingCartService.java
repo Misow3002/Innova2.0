@@ -1,6 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
 import tn.esprit.spring.AhmedGuedri.entities.ShoppingCart;
+import tn.esprit.spring.AhmedGuedri.entities.User;
 
 import java.util.List;
 
@@ -13,10 +14,9 @@ public interface IShoppingCartService {
     void clearShoppingCart(String id);
     void removeProductFromShoppingCartEmpty(String id);
     void removeProductFromShoppingCart(String id, String idProduct);
-    ShoppingCart retrieveShoppingCartByUser(String idUser);
-    ShoppingCart createShoppingCartByUser(String idUser);
     void addProductToShoppingCart(String id, String idProduct);
     float getTotalPriceShoppingCart(String id);
+    void createShoppingCartForUser( String idUser);
     
 
 
