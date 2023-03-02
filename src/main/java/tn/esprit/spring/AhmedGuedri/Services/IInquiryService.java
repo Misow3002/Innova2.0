@@ -1,5 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
+import tn.esprit.spring.AhmedGuedri.entities.Products;
+
 import java.util.List;
 
 
@@ -12,4 +14,6 @@ public interface IInquiryService {
     public void clearInquiry(String id);
     public void removeProductFromInquiry(String id);
     void addProductToInquiry(String id, String productId);
+    List<Products> getProductsFromInquiry(String id);
+
 }

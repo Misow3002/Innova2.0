@@ -44,6 +44,7 @@ public class InquiryServiceImpl implements IInquiryService {
         inquiry.getProductList().add(p);
         updateInquiry(inquiry);
     }
+
     //clear products from inquiry
     @Override
     public void clearInquiry(String id) {
@@ -60,6 +61,12 @@ public class InquiryServiceImpl implements IInquiryService {
         inquiry.getProductList().removeIf(p -> p.getNumberOfStock() == 0);
         updateInquiry(inquiry);
         
+    }
+    //get products from inquiry
+    @Override
+    public List<Products> getProductsFromInquiry(String id) {
+        Inquiry inquiry = retrieveInquiry(id);
+        return inquiry.getProductList();
     }
 
 

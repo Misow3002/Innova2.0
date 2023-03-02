@@ -50,8 +50,10 @@ import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
             @PathVariable("product-id") String productId) {
         iis.addProductToInquiry(id, productId);
     }
-
-
+@PutMapping("get-products-from-Inquiry/{Inquiry-id}")
+    public void getProductsFromInquiry(@PathVariable("Inquiry-id") String id) {
+        iis.getProductsFromInquiry(id);
+    }
  
 
 }
