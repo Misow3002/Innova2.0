@@ -28,10 +28,6 @@ public class   Products implements Serializable {
     private boolean Available;
     private int NumberOfStock;
 
-    //Relation avec panier
-    @ManyToOne(cascade = CascadeType.ALL)
-    Panier panier;
-
     //Relation --> Inquiry
     @ManyToMany(mappedBy = "ProductList")
     List<Inquiry> InquiryList;

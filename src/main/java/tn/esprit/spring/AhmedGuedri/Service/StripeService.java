@@ -34,8 +34,10 @@ public class StripeService {
     private PaymentRepository paymentRepository;
     @Autowired
     OrderService serviceOder;
+    @Autowired
+    ServiceEmail serviceEmail;
 
-    @Value("sk_test_51Khl7ZAmmAEwNuySJwTRMgb230wvzoZdIK2y9TshyH9zw23VcRLJtZFu9X3oL4CHhPUUjdnwFZKs7i3GCsLYaAhI00CeUoUGzp")
+    @Value("sk_test_51Mhg25BYRBc0J1wpoNuBuucIzrAq0xcEZOqxcuVaEnF3LbbVeEDZt7z7BLUeashdvG6IOyRWp9U6YsHP6eAcs9Gy00EQtJABl5")
     String stripeKey;
 
     public Payment payment(long idUser, long idOrder, Payment p) throws StripeException {
@@ -46,13 +48,13 @@ public class StripeService {
         params.put("name", user.getFirstName());
         params.put("email", user.getEmail());
         params.put("amount*100", orders.getPanier().getTotalPrice());
-        //params.put("created",p.getCreated());
-        Customer customer = Customer.create(params);
-        p.setCustomerId(customer.getId());
+        params.put("created",p.getCreated());
+      //  Customer customer = Customer.create(params);
+        //p.setCustomerId(customer.getId());
         return p;
     }
 
-    public double createCharge(String token, Long idUser, Long idOrders) throws StripeException {
+    public double createCharge(String email,String token, Long idUser, Long idOrders) throws StripeException {
         Optional<User> user = userRepository.findById(idUser);
         Orders orders = orderRepository.findById(idOrders).get();
 
@@ -61,6 +63,8 @@ public class StripeService {
         Map<String, Object> chargeParams = new HashMap<>();
         chargeParams.put("amount", Math.round(serviceOder.TotalOrdersTVA(idOrders)));
         chargeParams.put("currency", "usd");
+        chargeParams.put("receipt_email", email);
+        chargeParams.put("description", "Charge for " + email);
         chargeParams.put("source", token); // ^ obtained with Stripe.js
         //create a charge
         Charge charge = Charge.create(chargeParams);
@@ -74,7 +78,7 @@ public class StripeService {
         payment.setUser(user.get());
         orders.setPayment(payment);
         paymentRepository.save(payment);
-         // mailService.sendEmail(email, "Thank you for your purchase !", "thank");
+        serviceEmail.sendEmail(email, "Thank you for your purchase !", "payment with sucess");
         // payment successfully
         return serviceOder.TotalOrdersTVA(idOrders);
     }

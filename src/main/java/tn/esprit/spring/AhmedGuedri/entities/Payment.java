@@ -23,9 +23,9 @@ public class Payment implements Serializable {
 
     //stripe
 
-    String customerId;
-    int created;
 
+    int created;
+    //String customerId;
 
     @OneToOne(cascade = CascadeType.ALL)
     private User user;

@@ -12,7 +12,7 @@ public interface IOrderService {
 
     void deleteOrders(Long id);
 
-    Orders addOrders (Orders orders);
+    Orders addOrders (Orders orders ,Long iduser);
 
     Orders retrieveOrders(Long id);
 

@@ -8,6 +8,7 @@ import tn.esprit.spring.AhmedGuedri.Service.StripeService;
 import tn.esprit.spring.AhmedGuedri.entities.Orders;
 
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -20,10 +21,10 @@ public class OrderController {
     StripeService stripeService;
 
     //http://localhost:8083/ratatoskr/Order/addOrder
-    @PostMapping("/addOrder")
+    @PostMapping("/addOrder/{iduser}")
     @ResponseBody
-    public Orders addOrder(@RequestBody Orders o){
-        return orderService.addOrders(o);
+    public Orders addOrder(@RequestBody Orders o , @PathVariable Long iduser){
+        return orderService.addOrders(o,iduser);
     }
 
     //http://localhost:8083/ratatoskr/Order/updateOrders
@@ -64,9 +65,9 @@ public class OrderController {
         return orderService.addPanierToOrder(idpanier,idOrders);
     }
     //http://localhost:8083/ratatoskr/Order/stripe/token/1/1
-    @PostMapping("/stripe/{token}/{idUser}/{idOrders}")
+    @PostMapping("/stripe/{email}/{token}/{idUser}/{idOrders}")
     @ResponseBody
-    public double createCharge(@PathVariable String token, @PathVariable Long idUser, @PathVariable Long idOrders) throws StripeException  {
-        return stripeService.createCharge(token,idUser,idOrders);
+    public double createCharge(@PathVariable String email,@PathVariable String token, @PathVariable Long idUser, @PathVariable Long idOrders) throws StripeException , MessagingException {
+        return stripeService.createCharge(email,token,idUser,idOrders);
     }
 }

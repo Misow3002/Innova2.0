@@ -46,11 +46,15 @@ public class PanierService implements IPanierService{
 
     @Override
     public Panier addProductToPanier(Long panierId, Long productId) {
+
         Panier panier = panierRepo.findById(panierId).get();
         Products product = productRepo.findById(productId).get();
         panier.getProducts().add(product);
+        product.setNumberOfStock(product.getNumberOfStock()-1);
+        panier.setQuantity(panier.getQuantity()+1);
         panier.setTotalPrice(panier.getTotalPrice() + product.getPrice());
         return panierRepo.save(panier);
+        
     }
 
 }

@@ -1,6 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,6 +53,7 @@ public class User implements Serializable {
     List<Products> ProductList;
 
     //relation avec order
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
     private Set<Orders> orders;
 

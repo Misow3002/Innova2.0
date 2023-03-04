@@ -21,8 +21,6 @@ public class Orders implements Serializable {
     @Column(name="idorders")
     private Long IdOrders;
     @Enumerated(EnumType.STRING)
-    private Order_Status orderStatus;
-    @Enumerated(EnumType.STRING)
     private Payment_method paymentMethod;
     private String adress;
     @Temporal(TemporalType.TIMESTAMP)

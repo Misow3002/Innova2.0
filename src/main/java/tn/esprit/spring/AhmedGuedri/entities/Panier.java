@@ -24,7 +24,7 @@ public class Panier implements Serializable {
     private Long IdPanier;
     private long quantity;
 
-    private double totalPrice;
+    private float totalPrice;
     //relation one to one avec order
     @ManyToMany
     private Set<Products> products;

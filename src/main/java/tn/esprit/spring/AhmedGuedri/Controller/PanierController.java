@@ -61,7 +61,7 @@ public class PanierController {
 
     //http://localhost:8083/ratatoskr/Panier/total-price/1
     @GetMapping("/total-price/{panierId}")
-    public ResponseEntity<Double> getTotalPrice(@PathVariable Long panierId) {
+    public ResponseEntity<Float> getTotalPrice(@PathVariable Long panierId) {
         Panier panier = panierService.retrievePanier(panierId);
         if (panier == null) {
             return ResponseEntity.notFound().build();

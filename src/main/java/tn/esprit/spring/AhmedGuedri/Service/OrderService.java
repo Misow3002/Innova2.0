@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tn.esprit.spring.AhmedGuedri.Repository.OrderRepo;
 import tn.esprit.spring.AhmedGuedri.Repository.PanierRepo;
 import tn.esprit.spring.AhmedGuedri.Repository.ProductRepo;
+import tn.esprit.spring.AhmedGuedri.Repository.UserRepo;
 import tn.esprit.spring.AhmedGuedri.entities.*;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public class OrderService implements IOrderService {
     PanierRepo panierRepo;
     @Autowired
     ProductRepo productRepo;
+    @Autowired
+    UserRepo userRepo;
 
     @Override
     public List<Orders> retrieveAllOrders() {
@@ -35,7 +38,9 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Orders addOrders(Orders orders) {
+    public Orders addOrders(Orders orders ,Long iduser) {
+        User user = userRepo.findById(iduser).get();
+        orders.setUser(user);
         return orderRepo.save(orders);
     }
 
@@ -50,6 +55,7 @@ public class OrderService implements IOrderService {
         Panier panier = panierRepo.findById(panierId).orElse(null);
         Orders order = orderRepo.findById(orderId).orElse(null);
             order.setPanier(panier);
+            order.setTotal(panier.getTotalPrice());
             orderRepo.save(order);
 
         return order;
