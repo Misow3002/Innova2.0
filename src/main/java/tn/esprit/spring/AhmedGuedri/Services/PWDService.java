@@ -2,6 +2,7 @@ package tn.esprit.spring.AhmedGuedri.Services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.spring.AhmedGuedri.Repositories.PWDRepository;
 import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
 import tn.esprit.spring.AhmedGuedri.entities.HashedPWD;
@@ -17,7 +18,7 @@ public class PWDService implements IPWDService {
     UserRepository userRepository;
     PWDRepository pwdRepository;
 
-
+    @Transactional
     @Override
     public void AssignPasswordToUser(User u, String password) {
         HashedPWD newUserPass = new HashedPWD();
@@ -29,7 +30,7 @@ public class PWDService implements IPWDService {
         u.setHashedPWD(pwdRepository.findByUser(u));
         userRepository.save(u);
     }
-
+    @Transactional
     @Override
     public String EditPassword (String Email,String PrevPassword,String NewPassword){
         User user = userRepository.findByEmailEquals(Email);

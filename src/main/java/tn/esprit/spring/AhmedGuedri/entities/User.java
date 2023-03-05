@@ -34,13 +34,15 @@ public class User implements Serializable {
     private String Img_URL;
     private boolean Enabled;
     private String Country;
+    @Temporal(TemporalType.DATE)
+    private Date joined;
 //Relation Messages
     @OneToMany()
     List<Message> SentList;
     @OneToMany()
     List<Message> ReceivedList;
     //Relation PWD
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     HashedPWD hashedPWD;
     //Relation fees
     @OneToOne

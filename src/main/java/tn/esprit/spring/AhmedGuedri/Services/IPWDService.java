@@ -10,5 +10,4 @@ public interface IPWDService {
      String EditPassword(String Email,String password1,String password2); // Update Password
      String RetievePasswordInfo(String email); // Retrieve User Expiration dATE
 
-
 }

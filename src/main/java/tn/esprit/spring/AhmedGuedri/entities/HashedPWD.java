@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class HashedPWD implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
