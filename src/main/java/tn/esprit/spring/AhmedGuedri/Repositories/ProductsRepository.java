@@ -13,9 +13,7 @@ import java.util.List;
 @Repository
 public interface ProductsRepository extends JpaRepository<Products, Long> {
 
-   /* @Query("SELECT DISTINCT p FROM Products p JOIN p.Product_order o WHERE Orders.BroughtDate BETWEEN :startDate AND :endDate AND :supplierId MEMBER OF p.userProducts")
-    List<Products> findProductsSoldBySupplierLastMonth(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("supplierId") Long supplierId);*/
 
-    @Query("SELECT p FROM Products p JOIN DetailedOrders o GROUP BY p.IdProducts ORDER BY COUNT(o) DESC")
+    @Query("SELECT p FROM Products p ORDER BY size(p.Product_order) DESC")
     List<Products> findAllOrderByNumberOfOrders();
 }

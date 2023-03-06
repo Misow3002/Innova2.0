@@ -17,9 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -252,6 +250,34 @@ public class ProductService implements IProductService {
         message += "Total price of orders : " + fp + "\n" + "total number of orders : " + detailedOrdersbyrange.size() + "\n";
         message += "PS: The stock is supposed to be the sum of the quantity of orders and the current stock of the product.";
         return message;
+    }
+    /*public List<Products> sortproductsbyorders() {
+        List<Products> products = (List<Products>) productsRepository.findAll();
+        List<Products> productsbyorders = new ArrayList<>();
+        List<DetailedOrders> dorders = (List<DetailedOrders>) detailedOrdersRepository.findAll();
+        List<DetailedOrders> detailedOrdersbyrange = new ArrayList<>();
+        for (Products product : products) {
+            for (DetailedOrders dorder : dorders) {
+                if (dorder.getProduct() == product.getIdProducts()) {
+                    detailedOrdersbyrange.add(dorder);
+                }
+            }
+            product.setProduct_order(detailedOrdersbyrange.get(0));
+            productsbyorders.add(product);
+            detailedOrdersbyrange.clear();
+        }
+        Collections.sort(productsbyorders, new Comparator<Products>() {
+            @Override
+            public int compare(Products o1, Products o2) {
+                return o2.getProduct_order().getProductsList().size() - o1.getProduct_order().getProductsList().size();
+            }
+        });
+        return productsbyorders;*/
+
+    public List<Products> getAllProductsSortedByNumberOfOrders() {
+        System.out.println(productsRepository.findAllOrderByNumberOfOrders());
+        return productsRepository.findAllOrderByNumberOfOrders();
+
     }
 }
 

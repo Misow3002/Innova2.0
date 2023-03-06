@@ -18,21 +18,23 @@ public class ProductsRestController {
     @Autowired
     private IProductService productService;
     @PostMapping("/add")
-    Products addStudent(@RequestBody Products products){
+    Products addProduct(@RequestBody Products products){
         return productService.addOrUpdateProduct(products);
     }
     @PostMapping("/update")
-    Products updateStudent(@RequestBody Products products){
+    Products updateProduct(@RequestBody Products products){
         return productService.addOrUpdateProduct(products);
     }
     @GetMapping("/get/{id}")
-    Products getStudent(@PathVariable("id") Long IdProduct){
+    Products getProduct(@PathVariable("id") Long IdProduct){
         return productService.getProduct(IdProduct);
     }
     @GetMapping("/all")
-    List<Products> getAllStudent(){return productService.retrieveAllProducts();}
+    List<Products> getAllProducts(){return productService.retrieveAllProducts();}
+    @GetMapping("/allsorted")
+    List<Products> getAllProductsbyorders(){return productService.getAllProductsSortedByNumberOfOrders();}
     @DeleteMapping("/delete/{id}")
-    void deleteStudent(@PathVariable("id") Long IdProduct){
+    void deleteProducts(@PathVariable("id") Long IdProduct){
         productService.removeProduct(IdProduct);
     }
     @GetMapping("/order/get/{dates}/{datee}/{id}")

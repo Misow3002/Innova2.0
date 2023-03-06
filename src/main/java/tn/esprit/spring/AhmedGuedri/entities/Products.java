@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -44,7 +45,8 @@ public class Products implements Serializable {
     List<Feedbacks> FeedbackList;
 
     //Relation --> Orders
-    @ManyToOne
-    Orders Product_order;
+    @ManyToMany
+    List<Orders> Product_order;
+
 }
 
