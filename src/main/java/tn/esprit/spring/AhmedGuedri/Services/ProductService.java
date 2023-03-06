@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ProductService implements IProductService{
+public class ProductService implements IProductService {
     @Autowired
     private JavaMailSender MailSender;
     DetailedOrdersRepository detailedOrdersRepository;
@@ -33,6 +33,7 @@ public class ProductService implements IProductService{
     @Autowired
     ProductsRepository productsRepository;
     private EntityManager entityManager;
+
     @Override
     public List<Products> retrieveAllProducts() {
         return productsRepository.findAll();
@@ -59,8 +60,8 @@ public class ProductService implements IProductService{
     public void addOrUpdatedetailedOrders() {
         detailedOrdersRepository.deleteAll();
         detailedOrdersRepository.resetId();
-        List<Orders> orders =ordersRepository.findAll();
-        for (Orders order : orders){
+        List<Orders> orders = ordersRepository.findAll();
+        for (Orders order : orders) {
             DetailedOrders detailedOrders = new DetailedOrders();
             Long ordernum = order.getIdOrders();
             System.out.println("ordernum = " + ordernum);
@@ -80,28 +81,30 @@ public class ProductService implements IProductService{
             detailedOrdersRepository.save(detailedOrders);
         }
     }
+
     @Override
-    public List<DetailedOrders> getDetailedOrdersbyDaterange(Date startdate, Date enddate, Long Supplier){
+    public List<DetailedOrders> getDetailedOrdersbyDaterange(Date startdate, Date enddate, Long Supplier) {
         List<DetailedOrders> dorders = (List<DetailedOrders>) detailedOrdersRepository.findAll();
         List<DetailedOrders> detailedOrdersbyrange = new ArrayList<>();
-        float fp=0;
-        for(DetailedOrders dorder : dorders){
-            if(dorder.getBoughtDate().after(startdate) && dorder.getBoughtDate().before(enddate) && (dorder.getSupplier()) == Supplier){
-                fp=fp+dorder.getPrice();
+        float fp = 0;
+        for (DetailedOrders dorder : dorders) {
+            if (dorder.getBoughtDate().after(startdate) && dorder.getBoughtDate().before(enddate) && (dorder.getSupplier()) == Supplier) {
+                fp = fp + dorder.getPrice();
                 detailedOrdersbyrange.add(dorder);
             }
         }
         return detailedOrdersbyrange;
     }
+
     @Override
-    public String getStatisticsbyDaterange(Date startdate, Date enddate, Long Supplier){
+    public String getStatisticsbyDaterange(Date startdate, Date enddate, Long Supplier) {
         List<DetailedOrders> dorders = (List<DetailedOrders>) detailedOrdersRepository.findAll();
         List<DetailedOrders> detailedOrdersbyrange = new ArrayList<>();
         List<List<Integer>> detailedOrdersByMonth = new ArrayList<>();
-        float fp=0;
-        for(DetailedOrders dorder : dorders){
-            if(dorder.getBoughtDate().after(startdate) && dorder.getBoughtDate().before(enddate) && (dorder.getSupplier()) == Supplier){
-                fp=fp+dorder.getPrice();
+        float fp = 0;
+        for (DetailedOrders dorder : dorders) {
+            if (dorder.getBoughtDate().after(startdate) && dorder.getBoughtDate().before(enddate) && (dorder.getSupplier()) == Supplier) {
+                fp = fp + dorder.getPrice();
                 detailedOrdersbyrange.add(dorder);
             }
         }
@@ -125,7 +128,7 @@ public class ProductService implements IProductService{
             detailedOrdersByMonth.add(ordersByMonth);
         }
 
-        return ("list of orders by month" + detailedOrdersByMonth +"\n"+ "total price of orders :" + fp+ "\n"
+        return ("list of orders by month" + detailedOrdersByMonth + "\n" + "total price of orders :" + fp + "\n"
                 + "total number of orders :" + detailedOrdersbyrange.size());
     }
 
@@ -133,6 +136,7 @@ public class ProductService implements IProductService{
         Query resetQuery = entityManager.createNativeQuery("ALTER TABLE detailed_orders AUTO_INCREMENT = 1");
         resetQuery.executeUpdate();
     }
+
     //@Scheduled(fixedRate = 60000) // run every minute
     @Scheduled(cron = "0 0 1 1 * *")
     public void sendMonthlyReport() {
@@ -169,10 +173,10 @@ public class ProductService implements IProductService{
 // print the sales list
             for (ProductSales sales : salesList) {
                 Products prod = productsRepository.findById(sales.getProductId()).orElse(null);
-                message+= "Product: " + prod.getNameProducts() + ", Price: " + sales.getPrice() + ", Quantity: " + sales.getQuantity() +
-                        ", Total: "+ (sales.getPrice() * sales.getQuantity()) + " TND\n";
+                message += "Product: " + prod.getNameProducts() + ", Price: " + sales.getPrice() + ", Quantity: " + sales.getQuantity() +
+                        ", Total: " + (sales.getPrice() * sales.getQuantity()) + " TND\n";
                 System.out.println("Product: " + sales.getProductId() + ", Price: " + sales.getPrice() + ", Quantity: " + sales.getQuantity() +
-                        ", Total: "+ (sales.getPrice() * sales.getQuantity()) + " TND");
+                        ", Total: " + (sales.getPrice() * sales.getQuantity()) + " TND");
             }
             message += "Best regards,\n";
             message += "The Management";
@@ -188,8 +192,71 @@ public class ProductService implements IProductService{
         mailMessage.setTo(toEmail);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-        MailSender.send(mailMessage);}
+        MailSender.send(mailMessage);
+    }
+
+    @Scheduled(fixedRate = 60000) // run every minute
+    public void warnwhenstockistenough() {
+        List<Products> products = (List<Products>) productsRepository.findAll();
+        for (Products product : products) {
+            if (product.getNumberOfStock() < 10) {
+                String message = "Dear " + product.getUserProducts() + ",\n\n";
+                message += "The product " + product.getNameProducts() + " is running low on stock.\n\n";
+                message += "Best regards,\n";
+                message += "The Management";
+                sendEmail(MailSender, product.getUserProducts().get(0).getEmail(), "Low Stock Warning", message);
+                System.out.println(message);
+                System.out.println("Email sent to " + product.getUserProducts().get(0).getEmail());
+            }
+        }
+    }
+
+
+
+    public String getnumberofordersbyeveryproductforasupplier(Long id) {
+        List<DetailedOrders> dorders = (List<DetailedOrders>) detailedOrdersRepository.findAll();
+        List<DetailedOrders> detailedOrdersbyrange = new ArrayList<>();
+        float fp = 0;
+        for (DetailedOrders dorder : dorders) {
+            if (dorder.getSupplier() == id) {
+                fp = fp + dorder.getPrice();
+                detailedOrdersbyrange.add(dorder);
+            }
+        }
+        List<ProductSales> salesList = new ArrayList<>();
+        for (DetailedOrders dorder : detailedOrdersbyrange) {
+            boolean found = false;
+            for (ProductSales sales : salesList) {
+                if (sales.getProductId() == dorder.getProduct()) {
+                    sales.incrementQuantity();
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                ProductSales newSales = new ProductSales(dorder.getProduct(), dorder.getPrice(), 1);
+                salesList.add(newSales);
+            }
+        }
+
+        // print the sales list
+        String message = "";
+        for (ProductSales sales : salesList) {
+            Products prod = productsRepository.findById(sales.getProductId()).orElse(null);
+            System.out.println("Product: " + prod.getNameProducts() + ", Price: " + sales.getPrice() + ", Quantity: " + sales.getQuantity() +
+                    ", Total: " + (sales.getPrice() * sales.getQuantity()) + " TND");
+            message += "Product: " + prod.getNameProducts() + ", Price: " + sales.getPrice() + ", Quantity: " + sales.getQuantity() +
+                    ", Total: " + (sales.getPrice() * sales.getQuantity()) + " TND, Stock: "+prod.getNumberOfStock() +"Unit, Stock is supposed " +
+                    "to be: "+ (sales.getQuantity()+prod.getNumberOfStock()) +"\n";
+        }
+        message += "Total price of orders : " + fp + "\n" + "total number of orders : " + detailedOrdersbyrange.size() + "\n";
+        message += "PS: The stock is supposed to be the sum of the quantity of orders and the current stock of the product.";
+        return message;
+    }
 }
+
+
+///////////////////////////////
 class ProductSales {
     private Long productId;
     private Float price;

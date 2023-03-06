@@ -31,7 +31,7 @@ public class Products implements Serializable {
     @ManyToMany(mappedBy = "ProductList")
     List<Inquiry> InquiryList;
     //Relation --> USER
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     List<User> userProducts;
     //Relation -->Currency
     @ManyToMany

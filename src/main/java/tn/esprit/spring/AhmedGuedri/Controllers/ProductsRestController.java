@@ -43,5 +43,8 @@ public class ProductsRestController {
     String getDetailedOrdersbyDaterangeStats(@PathVariable("dates")@DateTimeFormat(pattern="yyyy-MM-dd") Date dates, @PathVariable("datee")@DateTimeFormat(pattern="yyyy-MM-dd") Date datee, @PathVariable("id") Long id){
         return productService.getStatisticsbyDaterange(dates,datee,id);
     }
-
+    @GetMapping("/order/getprods/{id}")
+    String getprodsandstockbysup(@PathVariable("id") Long id){
+        return productService.getnumberofordersbyeveryproductforasupplier(id);
+    }
 }

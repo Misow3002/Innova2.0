@@ -20,5 +20,18 @@ public class LoggingAspect {
         logger.info("Method "+name+"has fully executed");
 
 }
+    @Pointcut("execution(* tn.esprit.spring.AhmedGuedri.Services.*.*(..))")
+    public void serviceMethods() {}
+    @Before("serviceMethods()")
+    public void logMethodEntry(JoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        logger.info("Entering method {} with args {}", methodName, args);
+    }
+    @AfterThrowing(pointcut = "serviceMethods()", throwing = "exception")
+    public void logException(JoinPoint joinPoint, Exception exception) {
+        String methodName = joinPoint.getSignature().getName();
+        logger.error("Exception in method {}: {}", methodName, exception.getMessage());
+    }
 
 }

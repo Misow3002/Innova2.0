@@ -60,7 +60,7 @@ public class CurrencyServiceImpl implements ICurrencyService {
                 String url = "https://www.xe.com/currencyconverter/convert/?Amount=1&From="+namec.toUpperCase()+"&To=TND";
                 System.out.println("URL  "+url);
                 Document doc = Jsoup.connect(url).get();
-                //System.out.println("Doc  "+doc);
+
 
 
 // Select the <p> element with the given class and get its text content
@@ -78,8 +78,7 @@ public class CurrencyServiceImpl implements ICurrencyService {
                 cur.setDateC(dt);
                 cur.setExchangeRate((float) rate);
                 currencyRepository.save(cur);
-                /*currency.setExchangeRate((float) rate);
-                currencyRepository.save(currency);*/
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,8 +114,6 @@ public class CurrencyServiceImpl implements ICurrencyService {
                 cur.setDateC(dt);
                 cur.setExchangeRate((float) rate);
                 currencyRepository.save(cur);
-                /*currency.setExchangeRate((float) rate);
-                currencyRepository.save(currency);*/
             }
         } catch (IOException e) {
             e.printStackTrace();

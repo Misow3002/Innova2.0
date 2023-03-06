@@ -19,4 +19,8 @@ public interface IProductService {
     String getStatisticsbyDaterange(Date startdate, Date enddate, Long Supplier);
 
     void sendEmail(JavaMailSender javaMailSender, String toEmail, String subject, String message);
+
+    //String getordersforeveryproductandstockbysupplier(Long id);
+
+    String getnumberofordersbyeveryproductforasupplier(Long id);
 }
