@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.context.WebApplicationContext;
 import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
+import tn.esprit.spring.AhmedGuedri.Services.IEmailService;
 import tn.esprit.spring.AhmedGuedri.Services.IPWDService;
 import tn.esprit.spring.AhmedGuedri.Services.IUserService;
 import tn.esprit.spring.AhmedGuedri.Services.PWDService;
@@ -32,6 +33,7 @@ import tn.esprit.spring.AhmedGuedri.entities.HashedPWD;
 import tn.esprit.spring.AhmedGuedri.entities.Role;
 import tn.esprit.spring.AhmedGuedri.entities.RolesTypes;
 import tn.esprit.spring.AhmedGuedri.entities.User;
+import tn.esprit.spring.AhmedGuedri.payload.mailing.EmailDetails;
 import tn.esprit.spring.AhmedGuedri.payload.request.LoginRequest;
 import tn.esprit.spring.AhmedGuedri.payload.request.SignupRequest;
 import tn.esprit.spring.AhmedGuedri.payload.response.JwtResponse;
@@ -48,7 +50,7 @@ public class AuthController {
 
   AuthenticationManager authenticationManager;
 
-
+ private IEmailService emailService;
   UserRepository userRepository;
 
 
@@ -97,10 +99,20 @@ public class AuthController {
           .body(new MessageResponse("Error: Email is already in use!"));
     }
     iUserService.addUser(User);
-    //ipwdService.AssignPasswordToUser(User, passwordEncoder.encode(User.getHashedPWD().getPassword()));
+    //Create EmailDetails
+    EmailDetails emailDetails = new EmailDetails();
+    emailDetails.setRecipient(User.getEmail());
+    emailDetails.setSubject("Account Confirmation");
+    emailDetails.setMsgBody("Hello "+User.getFirstName()+" "+User.getLastName()+" ,\n\n" +
+            " welcome to our platform , your account has been created successfully .\n\n" +
+            " please confirm your account by clicking on the following link : http://localhost:8083/user/confirm-account?token="+User.getToken()+"\n\n" +
+            " or Enter Code Manually : "+User.getToken()+"\n\nBest Regards,\n" );
+
+    String status
+            = emailService.sendSimpleMail(emailDetails);
 
 
 
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    return ResponseEntity.ok(new MessageResponse("User registered successfully !"+" // "+status));
   }
 }

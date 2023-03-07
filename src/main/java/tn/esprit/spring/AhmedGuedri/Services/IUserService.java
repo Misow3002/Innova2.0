@@ -17,7 +17,7 @@ public interface IUserService {
     String VerifyUserToken(String Email,Long token); // Verify User Token
     //USER forgot password
     String ForgotPassword(String Email); // Forgot Password
-    String VerifyForgotPasswordToken(String Email,Long token); // Verify Forgot Password Token
+    String VerifyForgotPasswordToken(String Email,String PrevPass,String NewPass,Long token); // Verify Forgot Password Token
 
     List<String> TopTierSellers();
     void AntiBot();

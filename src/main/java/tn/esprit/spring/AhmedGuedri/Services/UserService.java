@@ -15,6 +15,7 @@ import tn.esprit.spring.AhmedGuedri.entities.HashedPWD;
 import tn.esprit.spring.AhmedGuedri.entities.Role;
 import tn.esprit.spring.AhmedGuedri.entities.RolesTypes;
 import tn.esprit.spring.AhmedGuedri.entities.User;
+import tn.esprit.spring.AhmedGuedri.payload.mailing.EmailDetails;
 import tn.esprit.spring.AhmedGuedri.payload.response.JwtResponse;
 import tn.esprit.spring.AhmedGuedri.security.jwt.JwtUtils;
 
@@ -27,6 +28,7 @@ import java.util.*;
 public class UserService implements IUserService{
     JwtUtils jwtUtils;
     UserRepository userRepository;
+    private IEmailService emailService;
     FeedbacksRepository feedbacksRepository;
 
     RoleRepository roleRepository;
@@ -42,6 +44,7 @@ public class UserService implements IUserService{
 
         u.setToken(TokenGenerator(7));
         u.setJoined(new Date());
+        u.setEnabled(true);
         System.out.println(u);
         Set<Role> strRoles = u.getRoles();
         System.out.println(strRoles);
@@ -187,20 +190,42 @@ public class UserService implements IUserService{
         userRepository.save(u);
 
         //SENDS OTP TO USER EMAIL
+        EmailDetails emailDetails = new EmailDetails();
+        emailDetails.setRecipient(u.getEmail());
+        emailDetails.setSubject("Forgot Password");
+        emailDetails.setMsgBody("Hello "+u.getFirstName()+" "+u.getLastName()+" ,\n\n" +
+                "Your OTP Code is : "+u.getToken()+"\n\n" +
+                "Regards,\n" +
+                "Team E-Commerce");
 
-        return "OTP CODE Sent";
+        String status
+                = emailService.sendSimpleMail(emailDetails);
+
+        //END
+
+        return status;
     }
 
     @Override
-    public String VerifyForgotPasswordToken(String Email, Long token) {
+    public String VerifyForgotPasswordToken(String Email,String PrevPass,String NewPass ,Long token) {
         User u= userRepository.findByEmailEquals(Email);
-        if(u.getToken()==token){
+        HashedPWD hashedPWD = u.getHashedPWD();
+        if(u.getToken().equals(token) && PrevPass.equals(NewPass)){
             u.setToken(0L);
+            hashedPWD.setPassword(passwordEncoder.encode(NewPass));
             userRepository.save(u);
             //GRANT PERMISSION TO CHANGE PASSWORD --> Redirect to Change Password Page
-            return ("User Can Change Password");
+            //SENDS OTP TO USER EMAIL
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(u.getEmail());
+            emailDetails.setSubject("Password Changed");
+            emailDetails.setMsgBody("Hello "+u.getFirstName()+" "+u.getLastName()+" ,\n\n" +
+                    "Your Password has been Changed Successfully\n\n" +
+                    "Regards,\n" +
+                    "Team E-Commerce");
+            return "User Password Changed"  ;
         }
-        return  "Wrong Token";
+        return  "Passwords Doesn't Match or Wrong Token";
     }
 
     @Override

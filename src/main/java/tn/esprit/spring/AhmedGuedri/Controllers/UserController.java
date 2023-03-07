@@ -13,6 +13,7 @@ import tn.esprit.spring.AhmedGuedri.Services.IPWDService;
 import tn.esprit.spring.AhmedGuedri.Services.IUserService;
 import tn.esprit.spring.AhmedGuedri.entities.HashedPWD;
 import tn.esprit.spring.AhmedGuedri.entities.User;
+import tn.esprit.spring.AhmedGuedri.payload.request.NewPasswordRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -72,7 +73,7 @@ public class UserController {
         String email= iUserService.UserVerificationReturnEmail(request);
         if (email.equals("Token Doesn't Match Authenfied User"))
             return "Token Doesn't Match Authenfied User";
-        return iUserService.deleteUser(emailAdress);
+        return iUserService.ActivateUser(emailAdress);
 
 
     }
@@ -87,8 +88,10 @@ public class UserController {
     }
     //Implementing VerifyUserToken
     @GetMapping("/VerifyUserToken")
-    public String VerifyUserToken(@RequestParam String email, @RequestParam Long token) {
-        System.out.println("Before : "+email+" - "+token);
+    public String VerifyUserToken(HttpServletRequest request, @RequestParam Long token) {
+        String email= iUserService.UserVerificationReturnEmail(request);
+        if (email.equals("Token Doesn't Match Authenfied User"))
+            return "Token Doesn't Match Authenfied User";
         return iUserService.VerifyUserToken(email, token);
 
     }
@@ -103,6 +106,17 @@ public class UserController {
     public void Authenticate(@RequestParam String email) {
         iUserService.Authenticate(email);
 
+    }
+    //Forgot Password
+    @GetMapping("/recovery/ForgotPassword")
+    public String ForgotPassword(@RequestParam String email) {
+        return iUserService.ForgotPassword(email);
+    }
+    //Verify Forgot Password Token
+    @PostMapping("/recovery/VerifyForgotPasswordToken")
+    public String VerifyForgotPasswordToken(@RequestParam String email, @RequestBody NewPasswordRequest newPasswordRequest, @RequestParam Long token) {
+        //return "gg works2";
+          return iUserService.VerifyForgotPasswordToken(email, newPasswordRequest.getPassword(), newPasswordRequest.getNewPassword(), token);
     }
 
 

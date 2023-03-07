@@ -48,20 +48,23 @@ public class PWDService implements IPWDService {
             System.out.println("User Current Password : "+pass.getPassword());
             System.out.println(pass);
             long diff = datenow.getTime() - pass.getChangeDate().getTime();
-            if( ((diff / (24 * 60 * 60 * 1000) <= 14))){
-                if (PrevPassword.equals(pass.getPassword())) {
+            if( ((diff / (24 * 60 * 60 * 1000) >= 14))){
+                //MUST CHANGE DATE
+                if (passwordEncoder.matches(PrevPassword, pass.getPassword())) {
+
                     System.out.println(PrevPassword);
                     System.out.println(NewPassword);
-                    System.out.printf("Password Changed");
+
                     pass.setPassword(passwordEncoder.encode(NewPassword));
                     pass.setChangeDate(datenow);
                     pwdRepository.save(pass);
+                    return "Password Changed";
                 } else
-                    System.out.println("Wrong Password");
+                    return "Wrong Password";
             } else
-                System.out.println("Password Date Not yet Expired");
+                return "Password Date Not yet Expired";
         }
-        return "Password Changed";
+        return "SomeThing Went Wrong ?!";
     }
 //            HashedPWD newUserPass = new HashedPWD();
 //            Date date = new Date();

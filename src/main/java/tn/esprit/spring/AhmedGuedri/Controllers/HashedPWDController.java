@@ -29,7 +29,7 @@ public class HashedPWDController {
         String email= iUserService.UserVerificationReturnEmail(request);
         if (email.equals("Token Doesn't Match Authenfied User"))
             return "Token Doesn't Match Authenfied User";
-        return ipwdService.EditPassword(email, passwordEncoder.encode(newPasswordRequest.getPassword()), newPasswordRequest.getNewPassword());
+        return ipwdService.EditPassword(email,newPasswordRequest.getPassword(), newPasswordRequest.getNewPassword());
 
 
     }
