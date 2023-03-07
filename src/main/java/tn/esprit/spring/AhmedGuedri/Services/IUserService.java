@@ -2,6 +2,7 @@ package tn.esprit.spring.AhmedGuedri.Services;
 
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface IUserService {
@@ -9,7 +10,9 @@ public interface IUserService {
     List<User> retrieveAllUsers();
      void addUser(User u); // Add User
      String updateUser(User u); // Update User
-     void deleteUser(String Email); // Delete User
+     String deleteUser(String Email); // Delete User
+
+    String ActivateUser(String Email); // Activate User
 
     String VerifyUserToken(String Email,Long token); // Verify User Token
     //USER forgot password
@@ -23,6 +26,8 @@ public interface IUserService {
     void Authenticate(String Email);
 
     Long TokenGenerator(int ends);
+
+    String UserVerificationReturnEmail(HttpServletRequest request);
 
 
 }
