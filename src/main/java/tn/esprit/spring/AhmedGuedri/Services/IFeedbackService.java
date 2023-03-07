@@ -10,7 +10,9 @@ public interface IFeedbackService {
     Feedbacks addOrUpdateFeedback(Feedbacks f);
     Feedbacks getFeedback(Long IdFeedbacks);
     void removeFeedback(Long IdFeedbacks);
+    List<Feedbacks> getFeedbacksByProduct(Long IdProduct);
 
-    //advanced
-    /*Feedbacks addAndAssigntoProduct(Feedbacks e, Integer IdProduct);*/
+    Feedbacks addAndAssigntoProduct(Feedbacks e, Long IdProduct);
+    float getAverageFeedbacks(Long IdProduct);
+    float getAverageFeedbacks5Stars();
 }

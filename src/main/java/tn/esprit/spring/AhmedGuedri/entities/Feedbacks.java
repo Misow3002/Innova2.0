@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -27,5 +28,7 @@ public class Feedbacks implements Serializable {
     //Relation --> Feedobject
     @OneToOne
     FeedObject feedObject;
+
+  
 }
 

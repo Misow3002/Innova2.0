@@ -33,5 +33,14 @@ public class FeedbacksRestController {
     void deleteInquiry(@PathVariable("id") Long Id){
         feedbackService.removeFeedback(Id);
     }
+    @GetMapping("/getFeedbacksByProduct/{id}")
+    List<Feedbacks> getFeedbacksByProduct(@PathVariable("id") Long Id){
+        return feedbackService.getFeedbacksByProduct(Id);
+    }
+    @PostMapping("/addAndAssigntoProduct/{id}")
+    Feedbacks addAndAssigntoProduct(@RequestBody Feedbacks feedback,@PathVariable("id") Long Id){
+        return feedbackService.addAndAssigntoProduct(feedback,Id);
+    }
+
 
 }
