@@ -24,7 +24,7 @@ public class HashedPWDController {
 
 
     @PutMapping("/edit/")
-    @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN') or hasRole('DELIVERY')")
     public String updateUser(HttpServletRequest request, @RequestBody NewPasswordRequest newPasswordRequest) {
         String email= iUserService.UserVerificationReturnEmail(request);
         if (email.equals("Token Doesn't Match Authenfied User"))

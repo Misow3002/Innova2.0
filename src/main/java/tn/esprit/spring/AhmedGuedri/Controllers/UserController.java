@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/updateUser")
-    @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN') or hasRole('DELIVERY')")
     public String updateUser(HttpServletRequest request,@RequestBody User u) {
         String email= iUserService.UserVerificationReturnEmail(request);
         if (email.equals("Token Doesn't Match Authenfied User"))
@@ -61,11 +61,11 @@ public class UserController {
 
     @DeleteMapping("/deleteUser")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deleteUser(HttpServletRequest request) {
+    public String deleteUser(HttpServletRequest request ,@RequestParam String emailAdress) {
         String email= iUserService.UserVerificationReturnEmail(request);
         if (email.equals("Token Doesn't Match Authenfied User"))
             return "Token Doesn't Match Authenfied User";
-        return iUserService.deleteUser(email);
+        return iUserService.deleteUser(emailAdress);
     }
     @PutMapping("/activateUser")
     @PreAuthorize("hasRole('ADMIN')")
@@ -79,6 +79,7 @@ public class UserController {
     }
     //implementing the method RetievePasswordInfo
     @GetMapping("/RetievePasswordInfo")
+    @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN') or hasRole('DELIVERY')")
     public String RetievePasswordInfo(HttpServletRequest request) {
         String email= iUserService.UserVerificationReturnEmail(request);
         if (email.equals("Token Doesn't Match Authenfied User"))
@@ -87,7 +88,9 @@ public class UserController {
 
     }
     //Implementing VerifyUserToken
+
     @GetMapping("/VerifyUserToken")
+    @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN') or hasRole('DELIVERY')")
     public String VerifyUserToken(HttpServletRequest request, @RequestParam Long token) {
         String email= iUserService.UserVerificationReturnEmail(request);
         if (email.equals("Token Doesn't Match Authenfied User"))
