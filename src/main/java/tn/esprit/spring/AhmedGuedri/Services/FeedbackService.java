@@ -74,9 +74,8 @@ public class FeedbackService implements IFeedbackService{
         }
         return sum / count;
     }
-
 //get an average of feedbacks on all prodcuts
-    
+    @Override
     public float getAverageFeedbacksAllProducts() {
         List<Products> products = productsService.retrieveAllProducts();
         float sum = 0;
@@ -87,6 +86,73 @@ public class FeedbackService implements IFeedbackService{
         }
         return sum / count;
     }
-
+//get the most rated product
+@Override
+    public Products getMostRatedProduct() {
+        List<Products> products = productsService.retrieveAllProducts();
+        float max = 0;
+        Products product = null;
+        for (Products p : products) {
+            if (getAverageFeedbacks(p.getIdProducts()) > max) {
+                max = getAverageFeedbacks(p.getIdProducts());
+                product = p;
+            }
+        }
+        return product;
+    }
+    //get the most rated product with 5 stars
+    @Override
+    public Products getMostRatedProduct5Stars() {
+        List<Products> products = productsService.retrieveAllProducts();
+        float max = 0;
+        Products product = null;
+        for (Products p : products) {
+            if (getAverageFeedbacks(p.getIdProducts()) == 5) {
+                if (getAverageFeedbacks(p.getIdProducts()) > max) {
+                    max = getAverageFeedbacks(p.getIdProducts());
+                    product = p;
+                }
+            }
+        }
+        return product;
+    }
+    //get the least rated product 
+    @Override
+    public Products getLeastRatedProduct() {
+        List<Products> products = productsService.retrieveAllProducts();
+        float min = 5;
+        Products product = null;
+        for (Products p : products) {
+            if (getAverageFeedbacks(p.getIdProducts()) < min) {
+                min = getAverageFeedbacks(p.getIdProducts());
+                product = p;
+            }
+        }
+        return product;
+    }
+    //get unique products with 5 stars
+    @Override
+    public List<Products> getUniqueProducts5Stars() {
+        List<Products> products = productsService.retrieveAllProducts();
+        Set<Products> uniqueProducts = new HashSet<>();
+        for (Products p : products) {
+            if (getAverageFeedbacks(p.getIdProducts()) == 5) {
+                uniqueProducts.add(p);
+            }
+        }
+        return uniqueProducts;
+    }
+    //get unique products with less than 3 stars
+    @Override
+    public List<Products> getUniqueProductsLessThan3Stars() {
+        List<Products> products = productsService.retrieveAllProducts();
+        Set<Products> uniqueProducts = new HashSet<>();
+        for (Products p : products) {
+            if (getAverageFeedbacks(p.getIdProducts()) < 3) {
+                uniqueProducts.add(p);
+            }
+        }
+        return uniqueProducts;
+    }
 }
 
