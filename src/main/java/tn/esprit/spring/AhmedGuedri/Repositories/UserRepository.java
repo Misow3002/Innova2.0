@@ -8,10 +8,11 @@ import tn.esprit.spring.AhmedGuedri.entities.RolesTypes;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
-
+//EL GEUDRI
     List<User> findByFirstNameOrLastNameContainingIgnoreCase(String firstName, String lastName);
 
     <Optional>User findByEmail(String email);
@@ -23,8 +24,28 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "SELECT COUNT(*) FROM user_chat_rooms r WHERE r.user_id = ?1",
             nativeQuery = true)
     public int countChatRoomByUser(Long userid);
+//END EL GEUDRI
+    User findByEmailEquals(String email);
 
+        @Query("SELECT count(u) FROM User u WHERE u.Enabled = true")
+    public int NumberOfSubs();
 
+        @Query("select e,h from User e, HashedPWD h,Role r where e.email=:Email and e.hashedPWD.PassId=h.PassId")
+    public List<Object[]> Authentification(@Param("Email") String email);
 
+    Optional<User> findByEmail(String username);
+    Boolean existsByEmail(String email);
 
+    //kol user 9adeh aandou min produit
+    @Query("select count(u) from User u,Products ")
+    public int countUserByProduct();
+    //  ki t7ot product yaatik li aandhom product hedheka w lezim stock ykoun >0
+
+    //sql query search for available product with users
+    //@Query("select u from User u,Products p where u.userProducts.IdProducts=p.IdProducts")
+    //public List<User> searchTopBuyers();
+    //tchouf enehou l user li ammel akher orders
+    //@Query("select u from User u,Orders o where u.orders.id=o.id")
+    //public List<User> searchUserByOrders();
+    //
 }

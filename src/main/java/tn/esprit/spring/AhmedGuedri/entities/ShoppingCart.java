@@ -23,6 +23,7 @@ public class ShoppingCart implements Serializable {
     //Relation User
     @OneToOne
     private User user;
+    
 
 
 
