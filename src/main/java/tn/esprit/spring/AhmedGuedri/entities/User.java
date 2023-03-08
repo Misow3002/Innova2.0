@@ -9,7 +9,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -22,13 +24,13 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long Id;
-    private String FirstName;
-    private String LastName;
+    private String firstName;
+    private String lastName;
     private Date BirthDate;
-    @Enumerated(EnumType.STRING)
-    private Roles Roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Role> roles = new HashSet<>();
     private String Adress;
-    private String Email;
+    private String email;
     //Anti Bot + PWD Recover
     private Long Token;
     private Long PhoneNumber;
@@ -36,9 +38,9 @@ public class User implements Serializable {
     private boolean Disabled;
     private String Country;
 //Relation Messages
-    @OneToMany()
+    @ManyToMany()
     List<Message> SentList;
-    @OneToMany()
+    @ManyToMany()
     List<Message> ReceivedList;
     //Relation PWD
     @OneToOne
@@ -59,6 +61,7 @@ public class User implements Serializable {
     @OneToOne
     ShoppingCart shoppingCart;
 
-
+    @ManyToMany
+    List<ChatRoom> chatRooms;
 }
 

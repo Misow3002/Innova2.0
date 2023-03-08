@@ -30,5 +30,8 @@ public class Delivery implements Serializable {
 
     @OneToMany (mappedBy = "delivery")
     List<Orders> OrdersList;
+
+    public static class Role {
+    }
 }
 
