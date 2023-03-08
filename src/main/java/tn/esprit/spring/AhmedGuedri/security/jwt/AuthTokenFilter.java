@@ -38,6 +38,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 //here caution
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+       // System.out.println("User Account Status on or off : "+userDetails.isEnabled());
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
                 userDetails,

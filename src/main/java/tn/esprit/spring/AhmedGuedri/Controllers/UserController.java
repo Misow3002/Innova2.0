@@ -89,7 +89,7 @@ public class UserController {
     }
     //Implementing VerifyUserToken
 
-    @GetMapping("/VerifyUserToken")
+    @GetMapping("/confirm-account")
     @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN') or hasRole('DELIVERY')")
     public String VerifyUserToken(HttpServletRequest request, @RequestParam Long token) {
         String email= iUserService.UserVerificationReturnEmail(request);
