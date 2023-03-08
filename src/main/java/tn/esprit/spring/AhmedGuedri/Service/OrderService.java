@@ -41,6 +41,9 @@ public class OrderService implements IOrderService {
     public Orders addOrders(Orders orders ,Long iduser) {
         User user = userRepo.findById(iduser).get();
         orders.setUser(user);
+        Invoices inv=new Invoices();
+        inv.setUrl();
+        orders.setOrdersInvoice(inv);
         return orderRepo.save(orders);
     }
 

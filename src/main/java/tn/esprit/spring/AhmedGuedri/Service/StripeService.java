@@ -21,6 +21,10 @@ import tn.esprit.spring.AhmedGuedri.entities.User;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
+import java.time.LocalDateTime;
 
 @Service
 public class StripeService {
@@ -49,7 +53,7 @@ public class StripeService {
         params.put("email", user.getEmail());
         params.put("amount*100", orders.getPanier().getTotalPrice());
         params.put("created",p.getCreated());
-      //  Customer customer = Customer.create(params);
+        //  Customer customer = Customer.create(params);
         //p.setCustomerId(customer.getId());
         return p;
     }
@@ -61,7 +65,7 @@ public class StripeService {
         String id;
         Stripe.apiKey = stripeKey;
         Map<String, Object> chargeParams = new HashMap<>();
-        chargeParams.put("amount", Math.round(serviceOder.TotalOrdersTVA(idOrders)));
+        chargeParams.put("amount", Math.round(serviceOder.TotalOrdersTVA(idOrders)*100));
         chargeParams.put("currency", "usd");
         chargeParams.put("receipt_email", email);
         chargeParams.put("description", "Charge for " + email);
@@ -77,6 +81,9 @@ public class StripeService {
         payment.setCreated(1);
         payment.setUser(user.get());
         orders.setPayment(payment);
+        Date date=Date.from((LocalDateTime.now()).atZone(ZoneId.systemDefault()).toInstant());
+        payment.setDatePayment(date);
+        payment.setIdorder(idOrders);
         paymentRepository.save(payment);
         serviceEmail.sendEmail(email, "Thank you for your purchase !", "payment with sucess");
         // payment successfully

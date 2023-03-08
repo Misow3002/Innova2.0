@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -19,12 +20,13 @@ public class Payment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long idOrder;
+    long idorder;
 
     //stripe
-
-
     int created;
+
+    @Temporal(TemporalType.DATE)
+    private Date datePayment;
     //String customerId;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -25,7 +25,7 @@ public class Orders implements Serializable {
     private String adress;
     @Temporal(TemporalType.TIMESTAMP)
     private Date BroughtDate;
-    private float product_cost;
+
     private float tax;
     private float total;
 

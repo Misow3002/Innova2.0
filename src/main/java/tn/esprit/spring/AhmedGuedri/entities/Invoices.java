@@ -20,6 +20,7 @@ public class Invoices implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idinvoices")
     private Long IdInvoice;
-    private String URL;
+    private String url;
+
 }
 

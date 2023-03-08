@@ -3,12 +3,15 @@ package tn.esprit.spring.AhmedGuedri.Controller;
 import com.stripe.exception.StripeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.AhmedGuedri.Repository.OrderRepo;
 import tn.esprit.spring.AhmedGuedri.Service.IOrderService;
 import tn.esprit.spring.AhmedGuedri.Service.StripeService;
+import tn.esprit.spring.AhmedGuedri.entities.Invoices;
 import tn.esprit.spring.AhmedGuedri.entities.Orders;
 
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -67,7 +70,8 @@ public class OrderController {
     //http://localhost:8083/ratatoskr/Order/stripe/token/1/1
     @PostMapping("/stripe/{email}/{token}/{idUser}/{idOrders}")
     @ResponseBody
-    public double createCharge(@PathVariable String email,@PathVariable String token, @PathVariable Long idUser, @PathVariable Long idOrders) throws StripeException , MessagingException {
+    public double createCharge(@PathVariable String email,@PathVariable String token, @PathVariable Long idUser, @PathVariable Long idOrders) throws StripeException  {
         return stripeService.createCharge(email,token,idUser,idOrders);
     }
+
 }
