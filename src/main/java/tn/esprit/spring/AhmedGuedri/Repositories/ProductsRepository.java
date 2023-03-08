@@ -6,4 +6,5 @@ import tn.esprit.spring.AhmedGuedri.entities.Products;
 
 @Repository
 public interface ProductsRepository extends JpaRepository<Products, Long> {
+
 }
