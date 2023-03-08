@@ -1,6 +1,9 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 import java.util.List;
+
+import org.aspectj.lang.annotation.AfterReturning;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
@@ -81,17 +84,19 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
   //create a shopping cart for every user created
     @Override
     public void createShoppingCartForUser(String id) {
-        User u = userRepository.findByEmailEquals(id);
+        User u = userRepository.findById(Long.parseLong(id)).get();
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(u);
         addShoppingCart(shoppingCart);
     }
     //create a shopping cart for all users
+    @Scheduled(cron = "0 0 0 * * ?")
+    @AfterReturning("execution(* tn.esprit.spring.AhmedGuedri.Services.UserServiceImpl.addUser(..))")
     @Override
     public void createShoppingCartForAllUsers() {
         List<User> users = (List<User>) userRepository.findAll();
         for (int i = 0; i < users.size(); i++) {
-            createShoppingCartForUser(users.get(i).getEmail());
+            createShoppingCartForUser(String.valueOf(users.get(i).getId()));
         }
     }
 
