@@ -85,9 +85,14 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
     @Override
     public void createShoppingCartForUser(String id) {
         User u = userRepository.findById(Long.parseLong(id)).get();
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(u);
-        addShoppingCart(shoppingCart);
+        if (u.getShoppingCart() == null) {
+            ShoppingCart shoppingCart = new ShoppingCart();
+            shoppingCart.setUser(u);
+            addShoppingCart(shoppingCart);
+            //EL MODIFICATION
+            u.setShoppingCart(shoppingCart);
+            userRepository.save(u);
+        }
     }
     //create a shopping cart for all users
     @Scheduled(cron = "0 0 0 * * ?")
