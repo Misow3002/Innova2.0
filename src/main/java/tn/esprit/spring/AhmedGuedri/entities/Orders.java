@@ -1,6 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +26,11 @@ public class Orders implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date BroughtDate;
     private boolean Confirmation;
+    //for delivery usage
+    private String shippingAdresse;
     //Delivery
     @ManyToOne
+    @JsonIgnore
     Delivery delivery;
 
     //Relation Payment
@@ -35,5 +39,15 @@ public class Orders implements Serializable {
     //Relation -->Invoices
     @OneToOne
     Invoices OrdersInvoice;
+    //Relation-->ShoppingCart
+    @OneToOne
+    ShoppingCart shoppingCart;
+    //Relation Product
+    @ManyToMany
+    private List<Products> productsList;
+
+
+
+
 }
 

@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +29,10 @@ public class User implements Serializable {
     private Roles Roles;
     private String Adress;
     private String Email;
-    private Number PhoneNumber;
+    //Anti Bot + PWD Recover
+    private Long Token;
+    private Long PhoneNumber;
+    private String Img_URL;
     private boolean Disabled;
     private String Country;
 //Relation Messages
@@ -39,9 +43,10 @@ public class User implements Serializable {
     //Relation PWD
     @OneToOne
     HashedPWD hashedPWD;
-    //Relation Fees
-    @OneToMany(mappedBy = "userFees")
-    List<Fees> FeesList;
+    //Relation fees
+    @OneToOne
+    Fees fees;
+
     //Relation Inquiry
     @OneToMany(mappedBy = "userInquiries")
     List<Inquiry> InquiryList;
@@ -49,8 +54,13 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "userProducts")
     List<Products> ProductList;
     //Relation Orders
-    @ManyToOne
-    Orders User_order;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Orders> User_orders;
+    @OneToOne
+    ShoppingCart shoppingCart;
+    @OneToOne
+    Delivery delivery;
+
 
 }
 
