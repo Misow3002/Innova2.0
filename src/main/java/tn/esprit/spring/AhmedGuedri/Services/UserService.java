@@ -105,7 +105,7 @@ public class UserService implements IUserService{
         }
 
         u.setRoles(roles);
-         userRepository.save(u);
+        userRepository.save(u);
         System.out.println("User Created");
     }
 
@@ -118,7 +118,7 @@ public class UserService implements IUserService{
         Set<Role> roles = new HashSet<>(u.getRoles());
         Set<Role> strRoles = new HashSet<>();
         roles.forEach(role -> {
-         //   System.out.println(role.getId().toString()+" "+role.getName().toString());
+            //   System.out.println(role.getId().toString()+" "+role.getName().toString());
             switch (role.getName().toString()) {
                 case "ROLE_ADMIN":
                     Role adminRole = roleRepository.findByName(RolesTypes.ROLE_ADMIN)
@@ -172,9 +172,9 @@ public class UserService implements IUserService{
 
     @Override
     public String deleteUser(String Email) {
-   User u= userRepository.findByEmailEquals(Email);
-   u.setEnabled(false);
-    userRepository.save(u);
+        User u= userRepository.findByEmailEquals(Email);
+        u.setEnabled(false);
+        userRepository.save(u);
         return  "User Disabled";
     }
 
@@ -213,13 +213,13 @@ public class UserService implements IUserService{
         ChatRoom chatRoom = chatRoomRepository.findById(r).get();
         System.out.println("chatRoom : "+chatRoom.getNameChat());
         if (u.getChatRooms().indexOf(chatRoom) != -1) {
-          //  return "User Can Send Message";
+            //  return "User Can Send Message";
             return true;
 
         }
         else
             return false;
-       // return "ERROR  : User Not in ChatRoom";
+        // return "ERROR  : User Not in ChatRoom";
     }
 
 
@@ -248,7 +248,7 @@ public class UserService implements IUserService{
 
 
         System.out.println("Message Sent");
-   }
+    }
     public int countChatRoomByUser(Long userid){
         return userRepository.countChatRoomByUser(userid);
     }
@@ -259,7 +259,7 @@ public class UserService implements IUserService{
         User u= userRepository.findByEmailEquals(Email);
         u.setEnabled(true);
         userRepository.save(u);
-       return "User Enabled";
+        return "User Enabled";
     }
 
     public String VerifyUserToken(String Email,Long token){
@@ -268,9 +268,9 @@ public class UserService implements IUserService{
         if(u.getToken().equals(token)){
             u.setToken(0L);
             userRepository.save(u);
-           return ("User Account has been Verified");
+            return ("User Account has been Verified");
         }
-           return  "Wrong Token";
+        return  "Wrong Token";
     }
 
 
@@ -299,7 +299,7 @@ public class UserService implements IUserService{
         else
         {
             // Send an SMS message
-             twilioService.sendSMS("+216"+phonenumber, body);
+            twilioService.sendSMS("+216"+phonenumber, body);
 
         }
         return "OTP Sent";
@@ -330,7 +330,7 @@ public class UserService implements IUserService{
     @Override
     public  List<String> TopTierSellers() {
 
-   List<String> ST= feedbacksRepository.TopTierSellers();
+        List<String> ST= feedbacksRepository.TopTierSellers();
 
 //        for (User u : ST) {
 //            System.out.println(u.getFirstName()+u.getLastName());
@@ -349,12 +349,12 @@ public class UserService implements IUserService{
             if (u.getToken().toString().length()==7 && u.isEnabled()==true)
             {
                 System.out.println("User Account Disabled : "+u.getEmail()+" |" );
-            long diff = datenow.getTime() - u.getJoined().getTime();
-            if( ((diff / (24 * 60 * 60 * 1000) <= 7))){
-        u.setEnabled(false);
-                userRepository.save(u);
+                long diff = datenow.getTime() - u.getJoined().getTime();
+                if( ((diff / (24 * 60 * 60 * 1000) <= 7))){
+                    u.setEnabled(false);
+                    userRepository.save(u);
+                }
             }
-        }
         });
 
     }
@@ -366,13 +366,13 @@ public class UserService implements IUserService{
 
     @Override
     public void Authenticate(String Email) {
-       // System.out.println("FETCHING USER");
+        // System.out.println("FETCHING USER");
         List<Object[]> user = userRepository.Authentification(Email);
         if (user.size() != 0)
         {
             User u =(User)user.get(0)[0];
             HashedPWD h =(HashedPWD) user.get(0)[1];
-         //   System.out.println(u.getEmail() + " | " + h.getPassword());
+            //   System.out.println(u.getEmail() + " | " + h.getPassword());
         }
         else
         {
@@ -404,9 +404,9 @@ public class UserService implements IUserService{
     public String SendSMS(String to, String body) {
 
         System.out.println("SMS SENT TO : "+to);
-         // Send an SMS message
-         //twilioService.sendSMS("+216"+to, body);
-         return "SMS MESSAGE SENT";
+        // Send an SMS message
+        //twilioService.sendSMS("+216"+to, body);
+        return "SMS MESSAGE SENT";
     }
 
 }

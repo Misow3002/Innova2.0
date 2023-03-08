@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByEmailEquals(String email);
     List<User> findByFirstNameOrLastNameContainingIgnoreCase(String firstName, String lastName);
 
-   // <Optional> User findByEmail(String email);
+    // <Optional> User findByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.roles = :r")
     public List<User> searchUserRoles(@Param("r") RolesTypes role);
@@ -26,10 +26,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
             nativeQuery = true)
     public int countChatRoomByUser(Long userid);
 
-        @Query("SELECT count(u) FROM User u WHERE u.Enabled = true")
+    @Query("SELECT count(u) FROM User u WHERE u.Enabled = true")
     public int NumberOfSubs();
 
-        @Query("select e,h from User e, HashedPWD h,Role r where e.email=:Email and e.hashedPWD.PassId=h.PassId")
+    @Query("select e,h from User e, HashedPWD h,Role r where e.email=:Email and e.hashedPWD.PassId=h.PassId")
     public List<Object[]> Authentification(@Param("Email") String email);
 
     Optional<User> findByEmail(String username);
