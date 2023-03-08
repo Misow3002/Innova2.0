@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 //EL GEUDRI
     List<User> findByFirstNameOrLastNameContainingIgnoreCase(String firstName, String lastName);
 
-    <Optional>User findByEmail(String email);
+    //<Optional>User findByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.roles = :r")
     public List<User> searchUserRoles(@Param("r") RolesTypes role);

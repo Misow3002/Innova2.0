@@ -224,7 +224,7 @@ public class UserService implements IUserService{
 
     @Override
     public void AffectToChatRoom(String email, ChatRoom r) {
-        User u = userRepository.findByEmail(email);
+        User u = userRepository.findByEmail(email).get();
         List<ChatRoom> chatRoomList = new ArrayList<>(u.getChatRooms());
         chatRoomList.add(r);
         u.setChatRooms(chatRoomList);
@@ -235,7 +235,7 @@ public class UserService implements IUserService{
     @Override
     public String AddUserToChatRoom(String email, Long r) {
 
-        User u = userRepository.findByEmail(email);
+        User u = userRepository.findByEmail(email).get();
         ChatRoom chatRoom = chatRoomRepository.findById(r).get();
         if (u.getChatRooms().indexOf(chatRoom) != -1) {
             return "User Already in ChatRoom";
@@ -251,7 +251,7 @@ public class UserService implements IUserService{
 
     @Override
     public Boolean VerifyUserInChatRoom(String email, Long r) {
-        User u = userRepository.findByEmail(email);
+        User u = userRepository.findByEmail(email).get();
         System.out.println("email : "+u.getEmail());
         ChatRoom chatRoom = chatRoomRepository.findById(r).get();
         System.out.println("chatRoom : "+chatRoom.getNameChat());
@@ -267,7 +267,7 @@ public class UserService implements IUserService{
 
 
     public void SendAndReceive(String Sender,Long IdMsg) {
-        User u = userRepository.findByEmail(Sender);
+        User u = userRepository.findByEmail(Sender).get();
         Message m = messagesRepository.findById(IdMsg).get();
         List<Message> oldSendings = new ArrayList<>(u.getSentList());
         List<Message> oldReceived = new ArrayList<>(u.getReceivedList());

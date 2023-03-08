@@ -88,6 +88,9 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(u);
         addShoppingCart(shoppingCart);
+        u.setShoppingCart(shoppingCart);
+        userRepository.save(u);
+
     }
     //create a shopping cart for all users
     @Scheduled(cron = "0 0 0 * * ?")
@@ -96,6 +99,7 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
     public void createShoppingCartForAllUsers() {
         List<User> users = (List<User>) userRepository.findAll();
         for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getShoppingCart() == null)
             createShoppingCartForUser(String.valueOf(users.get(i).getId()));
         }
     }
