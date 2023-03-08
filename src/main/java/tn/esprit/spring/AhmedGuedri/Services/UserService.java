@@ -5,21 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import tn.esprit.spring.AhmedGuedri.Repositories.FeedbacksRepository;
-
-import tn.esprit.spring.AhmedGuedri.Repositories.RoleRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.ChatRoomRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.MessagesRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.PWDRepository;
 import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
 import tn.esprit.spring.AhmedGuedri.entities.HashedPWD;
 import tn.esprit.spring.AhmedGuedri.entities.Role;
 import tn.esprit.spring.AhmedGuedri.entities.RolesTypes;
+import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
+import tn.esprit.spring.AhmedGuedri.entities.Message;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import tn.esprit.spring.AhmedGuedri.Repositories.FeedbacksRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.RoleRepository;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 import tn.esprit.spring.AhmedGuedri.payload.mailing.EmailDetails;
 import tn.esprit.spring.AhmedGuedri.payload.response.JwtResponse;
 import tn.esprit.spring.AhmedGuedri.security.jwt.JwtUtils;
 import tn.esprit.spring.AhmedGuedri.security.sms.TwilioService;
-
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -30,6 +33,9 @@ public class UserService implements IUserService{
     JwtUtils jwtUtils;
     private TwilioService twilioService;
     UserRepository userRepository;
+    PWDRepository pwdRepository;
+    MessagesRepository messagesRepository;
+    private final ChatRoomRepository chatRoomRepository;
     private IEmailService emailService;
     FeedbacksRepository feedbacksRepository;
 
@@ -217,6 +223,78 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public void AffectToChatRoom(String email, ChatRoom r) {
+        User u = userRepository.findByEmail(email);
+        List<ChatRoom> chatRoomList = new ArrayList<>(u.getChatRooms());
+        chatRoomList.add(r);
+        u.setChatRooms(chatRoomList);
+        userRepository.save(u);
+        System.out.println("User Affected to ChatRoom");
+    }
+
+    @Override
+    public String AddUserToChatRoom(String email, Long r) {
+
+        User u = userRepository.findByEmail(email);
+        ChatRoom chatRoom = chatRoomRepository.findById(r).get();
+        if (u.getChatRooms().indexOf(chatRoom) != -1) {
+            return "User Already in ChatRoom";
+
+        }
+
+        List<ChatRoom> chatRoomList = new ArrayList<>(u.getChatRooms());
+        chatRoomList.add(chatRoom);
+        u.setChatRooms(chatRoomList);
+        userRepository.save(u);
+        return "User Added to Existant ChatRoom";
+    }
+
+    @Override
+    public Boolean VerifyUserInChatRoom(String email, Long r) {
+        User u = userRepository.findByEmail(email);
+        System.out.println("email : "+u.getEmail());
+        ChatRoom chatRoom = chatRoomRepository.findById(r).get();
+        System.out.println("chatRoom : "+chatRoom.getNameChat());
+        if (u.getChatRooms().indexOf(chatRoom) != -1) {
+          //  return "User Can Send Message";
+            return true;
+
+        }
+        else
+            return false;
+       // return "ERROR  : User Not in ChatRoom";
+    }
+
+
+    public void SendAndReceive(String Sender,Long IdMsg) {
+        User u = userRepository.findByEmail(Sender);
+        Message m = messagesRepository.findById(IdMsg).get();
+        List<Message> oldSendings = new ArrayList<>(u.getSentList());
+        List<Message> oldReceived = new ArrayList<>(u.getReceivedList());
+        oldSendings.add(m);
+        u.setSentList(oldSendings);
+        //---BROADCASTING---//
+        List<Long> Receivers = chatRoomRepository.ListUserRelatedtoChatRoom(m.getChatRoom().getIdChatRoom());
+        for(Long receiver : Receivers) {
+            if (receiver == u.getId()) {
+                continue;
+            }
+            User u2 = userRepository.findById(receiver).get();
+            System.out.println("Receiver : "+u2.getEmail());
+            List<Message> oldReceived2 = new ArrayList<>(u2.getReceivedList());
+            oldReceived2.add(m);
+            u2.setReceivedList(oldReceived2);
+            userRepository.save(u2);
+            System.out.println("Message Sent From : "+u.getEmail()+" To : "+u2.getEmail());
+        }
+
+
+        System.out.println("Message Sent");
+   }
+    public int countChatRoomByUser(Long userid){
+        return userRepository.countChatRoomByUser(userid);
+    }
+
     public String VerifyForgotPasswordToken(String Email,String PrevPass,String NewPass ,Long token) {
         User u= userRepository.findByEmailEquals(Email);
         HashedPWD hashedPWD = u.getHashedPWD();
@@ -251,7 +329,7 @@ public class UserService implements IUserService{
 
     //@Scheduled(cron = "0 * * * * 7")
     //@Scheduled(cron = "*/10 0 0 * * *")
-    @Scheduled(fixedRate = 60000)
+    //@Scheduled(fixedRate = 60000)
     public void AntiBot() {
         System.out.println("AntiBot check");
         Date datenow = new Date();
@@ -319,6 +397,4 @@ public class UserService implements IUserService{
          //twilioService.sendSMS("+216"+to, body);
          return "SMS MESSAGE SENT";
     }
-
-
 }

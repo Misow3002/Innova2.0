@@ -23,10 +23,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long Id;
-    private String FirstName;
-    private String LastName;
+    private String firstName;
+    private String lastName;
     private Date BirthDate;
-
     //relation Roles
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
@@ -41,9 +40,9 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date joined;
 //Relation Messages
-    @OneToMany()
+    @ManyToMany()
     List<Message> SentList;
-    @OneToMany()
+    @ManyToMany()
     List<Message> ReceivedList;
     //Relation PWD
     @OneToOne(cascade = CascadeType.ALL)
@@ -64,6 +63,7 @@ public class User implements Serializable {
     @OneToOne
     ShoppingCart shoppingCart;
 
-
+    @ManyToMany
+    List<ChatRoom> chatRooms;
 }
 

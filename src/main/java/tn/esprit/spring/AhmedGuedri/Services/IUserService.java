@@ -1,5 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,12 @@ public interface IUserService {
     String UserVerificationReturnEmail(HttpServletRequest request);
 
     String SendSMS(String to, String body);
+
+    void AffectToChatRoom(String email, ChatRoom r);
+    String AddUserToChatRoom(String email, Long r);
+    Boolean VerifyUserInChatRoom(String email, Long r);
+    public void SendAndReceive(String Sender,Long IdMsg);
+
 
 
 }

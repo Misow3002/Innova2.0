@@ -13,20 +13,19 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Table(name = "ChatRoom")
 public class ChatRoom implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idchatroom")
     private Long IdChatRoom;
     private String NameChat;
-    //enum product category
-    @Enumerated(EnumType.STRING)
-    private ProductCategory Category;
     private boolean visibility;
     private Boolean IsActive;
     //Relation-->Message
     @OneToMany(mappedBy = "chatRoom")
     List<Message> messages;
+    //Relation-->User
 
 }
 
