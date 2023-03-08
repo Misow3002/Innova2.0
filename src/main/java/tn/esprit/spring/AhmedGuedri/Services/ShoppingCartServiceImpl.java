@@ -85,14 +85,13 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
     @Override
     public void createShoppingCartForUser(String id) {
         User u = userRepository.findById(Long.parseLong(id)).get();
-        if (u.getShoppingCart() == null) {
-            ShoppingCart shoppingCart = new ShoppingCart();
-            shoppingCart.setUser(u);
-            addShoppingCart(shoppingCart);
-            //EL MODIFICATION
-            u.setShoppingCart(shoppingCart);
-            userRepository.save(u);
-        }
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(u);
+        addShoppingCart(shoppingCart);
+        u.setShoppingCart(shoppingCart);
+        userRepository.save(u);
+
     }
     //create a shopping cart for all users
     @Scheduled(cron = "0 0 0 * * ?")
@@ -101,6 +100,7 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
     public void createShoppingCartForAllUsers() {
         List<User> users = (List<User>) userRepository.findAll();
         for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getShoppingCart() == null)
             createShoppingCartForUser(String.valueOf(users.get(i).getId()));
         }
     }

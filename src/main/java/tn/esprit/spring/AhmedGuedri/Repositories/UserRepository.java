@@ -16,6 +16,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByEmailEquals(String email);
     List<User> findByFirstNameOrLastNameContainingIgnoreCase(String firstName, String lastName);
 
+
     // <Optional> User findByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.roles = :r")
