@@ -5,24 +5,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import tn.esprit.spring.AhmedGuedri.Repositories.ChatRoomRepository;
 import tn.esprit.spring.AhmedGuedri.Repositories.MessagesRepository;
 import tn.esprit.spring.AhmedGuedri.Repositories.PWDRepository;
 import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
-import tn.esprit.spring.AhmedGuedri.entities.HashedPWD;
-import tn.esprit.spring.AhmedGuedri.entities.Role;
-import tn.esprit.spring.AhmedGuedri.entities.RolesTypes;
 import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
 import tn.esprit.spring.AhmedGuedri.entities.Message;
+import tn.esprit.spring.AhmedGuedri.entities.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tn.esprit.spring.AhmedGuedri.Repositories.FeedbacksRepository;
+
 import tn.esprit.spring.AhmedGuedri.Repositories.RoleRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
+import tn.esprit.spring.AhmedGuedri.entities.HashedPWD;
+import tn.esprit.spring.AhmedGuedri.entities.Role;
+import tn.esprit.spring.AhmedGuedri.entities.RolesTypes;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 import tn.esprit.spring.AhmedGuedri.payload.mailing.EmailDetails;
 import tn.esprit.spring.AhmedGuedri.payload.response.JwtResponse;
 import tn.esprit.spring.AhmedGuedri.security.jwt.JwtUtils;
 import tn.esprit.spring.AhmedGuedri.security.sms.TwilioService;
+
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -36,11 +41,13 @@ public class UserService implements IUserService{
     PWDRepository pwdRepository;
     MessagesRepository messagesRepository;
     private final ChatRoomRepository chatRoomRepository;
+
     private IEmailService emailService;
     FeedbacksRepository feedbacksRepository;
 
     RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+
     @Override
     public List<User> retrieveAllUsers() {
         return userRepository.findAll();
@@ -98,7 +105,7 @@ public class UserService implements IUserService{
         }
 
         u.setRoles(roles);
-         userRepository.save(u);
+        userRepository.save(u);
         System.out.println("User Created");
     }
 
@@ -111,7 +118,7 @@ public class UserService implements IUserService{
         Set<Role> roles = new HashSet<>(u.getRoles());
         Set<Role> strRoles = new HashSet<>();
         roles.forEach(role -> {
-         //   System.out.println(role.getId().toString()+" "+role.getName().toString());
+            //   System.out.println(role.getId().toString()+" "+role.getName().toString());
             switch (role.getName().toString()) {
                 case "ROLE_ADMIN":
                     Role adminRole = roleRepository.findByName(RolesTypes.ROLE_ADMIN)
@@ -165,62 +172,12 @@ public class UserService implements IUserService{
 
     @Override
     public String deleteUser(String Email) {
-   User u= userRepository.findByEmailEquals(Email);
-   u.setEnabled(false);
-    userRepository.save(u);
+        User u= userRepository.findByEmailEquals(Email);
+        u.setEnabled(false);
+        userRepository.save(u);
         return  "User Disabled";
     }
-    //Activate User Account
-    @Override
-    public String ActivateUser(String Email) {
-        User u= userRepository.findByEmailEquals(Email);
-        u.setEnabled(true);
-        userRepository.save(u);
-       return "User Enabled";
-    }
 
-    public String VerifyUserToken(String Email,Long token){
-        User u= userRepository.findByEmailEquals(Email);
-        System.out.println("User Token : "+u.getToken());
-        if(u.getToken().equals(token)){
-            u.setToken(0L);
-            userRepository.save(u);
-           return ("User Account has been Verified");
-        }
-           return  "Wrong Token";
-    }
-
-
-    @Override
-    public String ForgotPassword(String Email,Boolean Phone,String phonenumber) {
-        User u= userRepository.findByEmailEquals(Email);
-        u.setToken(TokenGenerator(6));
-        userRepository.save(u);
-        String body = "Hello " + u.getFirstName() + " " + u.getLastName() + " ,\n\n" +
-                "Your OTP Code is : " + u.getToken() + "\n\n" +
-                "Regards,\n" +
-                "Team E-Commerce";
-        if (Phone == false) {
-            //SENDS OTP TO USER EMAIL
-            EmailDetails emailDetails = new EmailDetails();
-            emailDetails.setRecipient(u.getEmail());
-            emailDetails.setSubject("Forgot Password");
-
-            emailDetails.setMsgBody(body);
-
-            String status
-                    = emailService.sendSimpleMail(emailDetails);
-
-            //END
-        }
-        else
-        {
-            // Send an SMS message
-             twilioService.sendSMS("+216"+phonenumber, body);
-
-        }
-        return "OTP Sent";
-    }
 
     @Override
     public void AffectToChatRoom(String email, ChatRoom r) {
@@ -256,17 +213,18 @@ public class UserService implements IUserService{
         ChatRoom chatRoom = chatRoomRepository.findById(r).get();
         System.out.println("chatRoom : "+chatRoom.getNameChat());
         if (u.getChatRooms().indexOf(chatRoom) != -1) {
-          //  return "User Can Send Message";
+            //  return "User Can Send Message";
             return true;
 
         }
         else
             return false;
-       // return "ERROR  : User Not in ChatRoom";
+        // return "ERROR  : User Not in ChatRoom";
     }
 
 
     public void SendAndReceive(String Sender,Long IdMsg) {
+        //fixed
         User u = userRepository.findByEmail(Sender).get();
         Message m = messagesRepository.findById(IdMsg).get();
         List<Message> oldSendings = new ArrayList<>(u.getSentList());
@@ -290,11 +248,64 @@ public class UserService implements IUserService{
 
 
         System.out.println("Message Sent");
-   }
+    }
     public int countChatRoomByUser(Long userid){
         return userRepository.countChatRoomByUser(userid);
     }
 
+    //Activate User Account
+    @Override
+    public String ActivateUser(String Email) {
+        User u= userRepository.findByEmailEquals(Email);
+        u.setEnabled(true);
+        userRepository.save(u);
+        return "User Enabled";
+    }
+
+    public String VerifyUserToken(String Email,Long token){
+        User u= userRepository.findByEmailEquals(Email);
+        System.out.println("User Token : "+u.getToken());
+        if(u.getToken().equals(token)){
+            u.setToken(0L);
+            userRepository.save(u);
+            return ("User Account has been Verified");
+        }
+        return  "Wrong Token";
+    }
+
+
+    @Override
+    public String ForgotPassword(String Email,Boolean Phone,String phonenumber) {
+        User u= userRepository.findByEmailEquals(Email);
+        u.setToken(TokenGenerator(6));
+        userRepository.save(u);
+        String body = "Hello " + u.getFirstName() + " " + u.getLastName() + " ,\n\n" +
+                "Your OTP Code is : " + u.getToken() + "\n\n" +
+                "Regards,\n" +
+                "Team E-Commerce";
+        if (Phone == false) {
+            //SENDS OTP TO USER EMAIL
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(u.getEmail());
+            emailDetails.setSubject("Forgot Password");
+
+            emailDetails.setMsgBody(body);
+
+            String status
+                    = emailService.sendSimpleMail(emailDetails);
+
+            //END
+        }
+        else
+        {
+            // Send an SMS message
+            twilioService.sendSMS("+216"+phonenumber, body);
+
+        }
+        return "OTP Sent";
+    }
+
+    @Override
     public String VerifyForgotPasswordToken(String Email,String PrevPass,String NewPass ,Long token) {
         User u= userRepository.findByEmailEquals(Email);
         HashedPWD hashedPWD = u.getHashedPWD();
@@ -319,7 +330,7 @@ public class UserService implements IUserService{
     @Override
     public  List<String> TopTierSellers() {
 
-   List<String> ST= feedbacksRepository.TopTierSellers();
+        List<String> ST= feedbacksRepository.TopTierSellers();
 
 //        for (User u : ST) {
 //            System.out.println(u.getFirstName()+u.getLastName());
@@ -338,12 +349,12 @@ public class UserService implements IUserService{
             if (u.getToken().toString().length()==7 && u.isEnabled()==true)
             {
                 System.out.println("User Account Disabled : "+u.getEmail()+" |" );
-            long diff = datenow.getTime() - u.getJoined().getTime();
-            if( ((diff / (24 * 60 * 60 * 1000) <= 7))){
-        u.setEnabled(false);
-                userRepository.save(u);
+                long diff = datenow.getTime() - u.getJoined().getTime();
+                if( ((diff / (24 * 60 * 60 * 1000) <= 7))){
+                    u.setEnabled(false);
+                    userRepository.save(u);
+                }
             }
-        }
         });
 
     }
@@ -355,13 +366,13 @@ public class UserService implements IUserService{
 
     @Override
     public void Authenticate(String Email) {
-       // System.out.println("FETCHING USER");
+        // System.out.println("FETCHING USER");
         List<Object[]> user = userRepository.Authentification(Email);
         if (user.size() != 0)
         {
             User u =(User)user.get(0)[0];
             HashedPWD h =(HashedPWD) user.get(0)[1];
-         //   System.out.println(u.getEmail() + " | " + h.getPassword());
+            //   System.out.println(u.getEmail() + " | " + h.getPassword());
         }
         else
         {
@@ -393,8 +404,9 @@ public class UserService implements IUserService{
     public String SendSMS(String to, String body) {
 
         System.out.println("SMS SENT TO : "+to);
-         // Send an SMS message
-         //twilioService.sendSMS("+216"+to, body);
-         return "SMS MESSAGE SENT";
+        // Send an SMS message
+        //twilioService.sendSMS("+216"+to, body);
+        return "SMS MESSAGE SENT";
     }
+
 }
