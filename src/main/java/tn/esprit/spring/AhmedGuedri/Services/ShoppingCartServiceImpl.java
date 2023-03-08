@@ -104,7 +104,12 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
             createShoppingCartForUser(String.valueOf(users.get(i).getId()));
         }
     }
-
+//get quantity of products in a shoppingcart
+    @Override
+    public int getQuantityOfProductsInShoppingCart(String id) {
+        ShoppingCart shoppingCart = retrieveShoppingCart(id);
+        return shoppingCart.getProductsList().size();
+    }
 
 
 

@@ -72,7 +72,14 @@ public class ShoppingCartController {
     public void createShoppingCartForAllUsers() {
         shoppingCartService.createShoppingCartForAllUsers();
     }
-
+    @GetMapping("/get-total-price-shoppingCart/{shoppingCart-id}")
+    public float getTotalPriceShoppingCart(@PathVariable("shoppingCart-id") String shoppingCartId) {
+        return shoppingCartService.getTotalPriceShoppingCart(shoppingCartId);
+    }
+    @GetMapping("/get-quantity-of-products-in-shoppingCart/{shoppingCart-id}")
+    public int getQuantityOfProductsInShoppingCart(@PathVariable("shoppingCart-id") String shoppingCartId) {
+        return shoppingCartService.getQuantityOfProductsInShoppingCart(shoppingCartId);
+    }
     
 
  
