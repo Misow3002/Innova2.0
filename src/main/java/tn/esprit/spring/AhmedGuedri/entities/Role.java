@@ -5,6 +5,7 @@ package tn.esprit.spring.AhmedGuedri.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 
-public class Role {
+public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
