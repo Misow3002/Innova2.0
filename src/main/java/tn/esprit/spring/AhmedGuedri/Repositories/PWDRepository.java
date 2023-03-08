@@ -8,4 +8,6 @@ import tn.esprit.spring.AhmedGuedri.entities.User;
 @Repository
 public interface PWDRepository extends JpaRepository<HashedPWD,Long> {
     HashedPWD findByUser(User user);
+
+
 }

@@ -1,22 +1,23 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-
+@ToString
+@DynamicUpdate
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,23 +26,27 @@ public class User implements Serializable {
     private String FirstName;
     private String LastName;
     private Date BirthDate;
-    @Enumerated(EnumType.STRING)
-    private Roles Roles;
+
+    //relation Roles
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Role> roles = new HashSet<>();
     private String Adress;
-    private String Email;
+    private String email;
     //Anti Bot + PWD Recover
     private Long Token;
     private Long PhoneNumber;
     private String Img_URL;
-    private boolean Disabled;
+    private boolean Enabled;
     private String Country;
+    @Temporal(TemporalType.DATE)
+    private Date joined;
 //Relation Messages
     @OneToMany()
     List<Message> SentList;
     @OneToMany()
     List<Message> ReceivedList;
     //Relation PWD
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     HashedPWD hashedPWD;
     //Relation fees
     @OneToOne
