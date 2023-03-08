@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Repository.OrderRepo;
 import tn.esprit.spring.AhmedGuedri.Service.IOrderService;
+import tn.esprit.spring.AhmedGuedri.Service.OrderService;
 import tn.esprit.spring.AhmedGuedri.Service.StripeService;
 import tn.esprit.spring.AhmedGuedri.entities.Invoices;
 import tn.esprit.spring.AhmedGuedri.entities.Orders;
@@ -12,6 +13,10 @@ import tn.esprit.spring.AhmedGuedri.entities.Orders;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -73,5 +78,24 @@ public class OrderController {
     public double createCharge(@PathVariable String email,@PathVariable String token, @PathVariable Long idUser, @PathVariable Long idOrders) throws StripeException  {
         return stripeService.createCharge(email,token,idUser,idOrders);
     }
+/*
+    @GetMapping("/exportOrder/pdf")
+    public void exportToPDF(HttpServletResponse response) throws IOException, com.lowagie.text.DocumentException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        List<Orders> listOrders = OrderService.;
+
+        O exporter = new OfferPDFExporter(listOffers);
+        exporter.export(response);
+
+    }*/
+
+
 
 }

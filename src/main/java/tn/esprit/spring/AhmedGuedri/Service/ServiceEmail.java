@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 public class ServiceEmail {
     @Autowired
     private final JavaMailSender javaMailSender;
+    @Autowired
+    private  PDFGeneratorService pdfGeneratorService;
 
     @Autowired
     public ServiceEmail(JavaMailSender javaMailSender) {
@@ -18,6 +20,7 @@ public class ServiceEmail {
 
     public void sendEmail( String email, String subject, String message) {
         SimpleMailMessage mail = new SimpleMailMessage();
+
         mail.setTo(email);
         mail.setSubject(subject);
         mail.setText(message);

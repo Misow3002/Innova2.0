@@ -2,6 +2,7 @@ package tn.esprit.spring.AhmedGuedri.Service;
 
 import tn.esprit.spring.AhmedGuedri.entities.Orders;
 import tn.esprit.spring.AhmedGuedri.entities.Panier;
+import tn.esprit.spring.AhmedGuedri.entities.Payment;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface IOrderService {
 
     Orders addPanierToOrder(Long panierId, Long orderId);
     public Float TotalOrdersTVA (Long orderId);
+
 }

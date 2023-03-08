@@ -1,10 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +58,15 @@ public class Orders implements Serializable {
 
 
     //Relation Payment
+    @Override
+    public String toString() {
+        return  "IdOrders=" + IdOrders +"\n"+
+                "paymentMethod"+paymentMethod+"\n"+
+                "BroughtDate" + BroughtDate+"\n"+
 
+                "tax=" + tax +"\n"+
+                "total"+total+"\n";
+    }
 
 }
 
