@@ -13,7 +13,9 @@ import tn.esprit.spring.AhmedGuedri.entities.User;
 public class ShoppingCartServiceImpl implements IShoppingCartService {
     @Autowired
     ProductsRepository productsRepository;
+    @Autowired
     UserRepository userRepository;
+    @Autowired
     ShoppingCartRepository shoppingCartRepository;
     @Override
     public List<ShoppingCart> retrieveAllShoppingCarts() {

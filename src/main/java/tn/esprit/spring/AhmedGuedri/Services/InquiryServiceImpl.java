@@ -14,6 +14,7 @@ public class InquiryServiceImpl implements IInquiryService {
     @Autowired
     InquiryRepository inquiryRepository;
     ProductService productService;
+    @Autowired
     ProductsRepository productsRepository;
     @Override
     public List<Inquiry> retrieveAllInquiries() {
