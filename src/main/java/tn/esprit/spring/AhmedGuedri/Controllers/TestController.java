@@ -11,6 +11,7 @@ import org.springframework.web.context.WebApplicationContext;
 import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
 import tn.esprit.spring.AhmedGuedri.Services.IUserService;
 import tn.esprit.spring.AhmedGuedri.security.jwt.JwtUtils;
+import tn.esprit.spring.AhmedGuedri.security.sms.TwilioService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 public class TestController {
   @Autowired
   UserRepository users;
+  @Autowired
+  private TwilioService twilioService;
   @Autowired
   IUserService iUserService;
   @Autowired
@@ -34,6 +37,10 @@ public class TestController {
   @GetMapping("/user")
   @PreAuthorize("hasRole('USER') or hasRole('PROVIDER') or hasRole('ADMIN')")
   public String userAccess() {
+
+
+
+
     return "User Content.";
   }
 

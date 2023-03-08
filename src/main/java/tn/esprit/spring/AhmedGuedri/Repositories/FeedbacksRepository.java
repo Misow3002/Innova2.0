@@ -18,9 +18,10 @@ public interface FeedbacksRepository extends JpaRepository<Feedbacks, Long> {
 //            "GROUP BY b.feedbacksProd.IdProducts")
 @Query(value = "SELECT CONCAT (u.first_name) FROM user u,feedbacks b,products p \n" +
         "WHERE 3<(select AVG (f.Stars)\n" +
-        "         FROM Feedbacks f,feed_ object fb\n" +
-        "         WHERE u.Roles ='Supplier' AND b.feedbacks_prod_idproducts=p.idproducts  AND fb.friendly =true OR fb.good_quality=true OR fb.trusted=true" +
-        "           ORDER BY DESC AVG (f.Stars)) \n" +
+        "FROM Feedbacks f,feed_ object fb\n" +
+        "WHERE u.Roles ='Supplier' AND b.feedbacks_prod_idproducts=p.idproducts  AND fb.friendly =true " +
+        "OR fb.good_quality=true OR fb.trusted=true" +
+        "     ORDER BY DESC AVG (f.Stars)) \n" +
         "GROUP BY u.id",nativeQuery = true)
 
     public List<String> TopTierSellers();

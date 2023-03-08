@@ -112,8 +112,9 @@ public class UserController {
     }
     //Forgot Password
     @GetMapping("/recovery/ForgotPassword")
-    public String ForgotPassword(@RequestParam String email) {
-        return iUserService.ForgotPassword(email);
+    public String ForgotPassword(@RequestParam String email,@RequestParam Boolean Phone,@RequestParam String PhoneNum) {
+
+        return iUserService.ForgotPassword(email,Phone, PhoneNum);
     }
     //Verify Forgot Password Token
     @PostMapping("/recovery/VerifyForgotPasswordToken")

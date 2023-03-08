@@ -18,6 +18,7 @@ import tn.esprit.spring.AhmedGuedri.entities.User;
 import tn.esprit.spring.AhmedGuedri.payload.mailing.EmailDetails;
 import tn.esprit.spring.AhmedGuedri.payload.response.JwtResponse;
 import tn.esprit.spring.AhmedGuedri.security.jwt.JwtUtils;
+import tn.esprit.spring.AhmedGuedri.security.sms.TwilioService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
@@ -27,6 +28,7 @@ import java.util.*;
 @AllArgsConstructor
 public class UserService implements IUserService{
     JwtUtils jwtUtils;
+    private TwilioService twilioService;
     UserRepository userRepository;
     private IEmailService emailService;
     FeedbacksRepository feedbacksRepository;
@@ -184,26 +186,34 @@ public class UserService implements IUserService{
 
 
     @Override
-    public String ForgotPassword(String Email) {
+    public String ForgotPassword(String Email,Boolean Phone,String phonenumber) {
         User u= userRepository.findByEmailEquals(Email);
         u.setToken(TokenGenerator(6));
         userRepository.save(u);
-
-        //SENDS OTP TO USER EMAIL
-        EmailDetails emailDetails = new EmailDetails();
-        emailDetails.setRecipient(u.getEmail());
-        emailDetails.setSubject("Forgot Password");
-        emailDetails.setMsgBody("Hello "+u.getFirstName()+" "+u.getLastName()+" ,\n\n" +
-                "Your OTP Code is : "+u.getToken()+"\n\n" +
+        String body = "Hello " + u.getFirstName() + " " + u.getLastName() + " ,\n\n" +
+                "Your OTP Code is : " + u.getToken() + "\n\n" +
                 "Regards,\n" +
-                "Team E-Commerce");
+                "Team E-Commerce";
+        if (Phone == false) {
+            //SENDS OTP TO USER EMAIL
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(u.getEmail());
+            emailDetails.setSubject("Forgot Password");
 
-        String status
-                = emailService.sendSimpleMail(emailDetails);
+            emailDetails.setMsgBody(body);
 
-        //END
+            String status
+                    = emailService.sendSimpleMail(emailDetails);
 
-        return status;
+            //END
+        }
+        else
+        {
+            // Send an SMS message
+             twilioService.sendSMS("+216"+phonenumber, body);
+
+        }
+        return "OTP Sent";
     }
 
     @Override
@@ -239,13 +249,17 @@ public class UserService implements IUserService{
         return ST;
     }
 
-    @Scheduled(cron = "0 * * * * 7")
+    //@Scheduled(cron = "0 * * * * 7")
+    //@Scheduled(cron = "*/10 0 0 * * *")
+    @Scheduled(fixedRate = 60000)
     public void AntiBot() {
+        System.out.println("AntiBot check");
         Date datenow = new Date();
 
         userRepository.findAll().forEach(u->{
-            if (u.getToken().toString().length()==7)
+            if (u.getToken().toString().length()==7 && u.isEnabled()==true)
             {
+                System.out.println("User Account Disabled : "+u.getEmail()+" |" );
             long diff = datenow.getTime() - u.getJoined().getTime();
             if( ((diff / (24 * 60 * 60 * 1000) <= 7))){
         u.setEnabled(false);
@@ -295,6 +309,15 @@ public class UserService implements IUserService{
             return jwtUtils.getUserNameFromJwtToken(headerAuth.substring(7, headerAuth.length()));
         }
         return "Token Doesn't Match Authenfied User";
+    }
+
+    @Override
+    public String SendSMS(String to, String body) {
+
+        System.out.println("SMS SENT TO : "+to);
+         // Send an SMS message
+         //twilioService.sendSMS("+216"+to, body);
+         return "SMS MESSAGE SENT";
     }
 
 

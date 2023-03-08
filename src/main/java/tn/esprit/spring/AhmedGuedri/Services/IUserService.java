@@ -16,7 +16,7 @@ public interface IUserService {
 
     String VerifyUserToken(String Email,Long token); // Verify User Token
     //USER forgot password
-    String ForgotPassword(String Email); // Forgot Password
+    String ForgotPassword(String Email,Boolean EmailorPhone,String phonenumber); // Forgot Password
     String VerifyForgotPasswordToken(String Email,String PrevPass,String NewPass,Long token); // Verify Forgot Password Token
 
     List<String> TopTierSellers();
@@ -28,6 +28,8 @@ public interface IUserService {
     Long TokenGenerator(int ends);
 
     String UserVerificationReturnEmail(HttpServletRequest request);
+
+    String SendSMS(String to, String body);
 
 
 }
