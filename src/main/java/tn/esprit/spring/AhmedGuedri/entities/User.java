@@ -58,6 +58,7 @@ public class User implements Serializable {
     List<Orders> User_orders;
     @OneToOne
     ShoppingCart shoppingCart;
+
     @OneToOne
     Delivery delivery;
 

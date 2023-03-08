@@ -26,6 +26,7 @@ public class DeliveryService implements IDeliveryService{
 
 
 
+    //api
     public double[] getAddressCoordinate(String address){
         JOpenCageGeocoder jOpenCageGeocoder = new JOpenCageGeocoder("16dd58b0920043c695dd0b4e58be478f");
         JOpenCageForwardRequest request = new JOpenCageForwardRequest(address);
@@ -36,6 +37,8 @@ public class DeliveryService implements IDeliveryService{
         return new double[] {response.getResults().get(0).getGeometry().getLat(),response.getResults().get(0).getGeometry().getLng()};
 
     }
+
+    //theoreme
     public double calculateDistance(String address1,String address2) {
         double lat1=getAddressCoordinate(address1)[0];
         double lon1=getAddressCoordinate(address1)[1];
@@ -54,20 +57,36 @@ public class DeliveryService implements IDeliveryService{
         String address=orders.getShippingAdresse();
         List<User> deliverys = userRepository.findAll().stream().filter(d->d.getRoles().equals(Roles.DeliveryP)).collect(Collectors.toList());
 
+        //api address
         double lat1, lon1;
         lat1 = getAddressCoordinate(address)[0];
         lon1 = getAddressCoordinate(address)[1];
 
+        //map de livreur et distance entre livreur et lieu de livraison
         Map<User, Double> deliveryDistance = new HashMap<>();
         for (User delivery : deliverys) {
             double distance = calculateDistance(delivery.getAdress(),address);
             deliveryDistance.put(delivery, distance);
         }
+        //why entry?
         List<Map.Entry<User, Double>> distanceList = new ArrayList<>(deliveryDistance.entrySet());
         distanceList.sort(Map.Entry.comparingByValue());
         User assignedDelivery=distanceList.get(0).getKey();
-        Delivery delivery=deliveryRepository.findDeliveryByDeliveredBy(assignedDelivery).orElse(null);
-        if(delivery!=null){
+        List<Delivery> deliveryss=deliveryRepository.findDeliveryByDeliveredBy(assignedDelivery);
+        System.out.println(deliveryss);
+        Delivery delivery;
+        if(deliveryss.size()==0){
+            delivery=new Delivery();
+            delivery.setDeliveredBy(assignedDelivery);
+            delivery.setStarDate(new Date());
+            delivery.setEstimatedDate(new Date());
+            delivery.setOrdersList(Arrays.asList(orders));
+            delivery.setStatusType(StatusType.Pending);
+
+            deliveryRepository.save(delivery);
+        }
+        else{
+            delivery=deliveryss.get(deliveryss.size()-1);
             if(delivery.getOrdersList().size()>4){
                 delivery=new Delivery();
                 delivery.setDeliveredBy(assignedDelivery);
@@ -80,19 +99,9 @@ public class DeliveryService implements IDeliveryService{
             else{
                 delivery.getOrdersList().add(orders);
             }
-
         }
-        else{
-            delivery=new Delivery();
-            delivery.setDeliveredBy(assignedDelivery);
-            delivery.setStarDate(new Date());
-            delivery.setEstimatedDate(new Date());
-            delivery.setOrdersList(Arrays.asList(orders));
-            delivery.setStatusType(StatusType.Pending);
 
-            deliveryRepository.save(delivery);
 
-        }
         orders.setDelivery(delivery);
         ordersRepository.save(orders);
         return delivery;
@@ -105,7 +114,7 @@ public class DeliveryService implements IDeliveryService{
         Delivery delivery=deliveryRepository.findById(idDelivery).orElse(null);
         List<Orders> ordersList=delivery.getOrdersList();
         List<String> places=new ArrayList<>();
-        places.add(0,delivery.getDeliveredBy().getAdress());
+        places.add(0,delivery.getDeliveredBy().getAdress()); //adresse du livreur
 
         for(Orders orders:ordersList){
             places.add(orders.getShippingAdresse());
@@ -135,7 +144,7 @@ public class DeliveryService implements IDeliveryService{
         List<Orders> ordersListPath=new ArrayList<>();
         for(int i=1;i<resulttour.size();i++){
             ordersListPath.add(ordersList.get(resulttour.get(i)-1));
-
+                //why i-1
         }
 
 
@@ -226,7 +235,7 @@ public class DeliveryService implements IDeliveryService{
                 mostFrequentPlace=entry.getKey();
             }
         }
-        return "Most frequent place delivered at:"+mostFrequentPlace+" whith highet count="+highestCount;
+        return "Most frequent place delivered to:"+mostFrequentPlace+" with highest count="+highestCount;
     }
 
 
