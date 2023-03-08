@@ -14,6 +14,7 @@ public class InquiryServiceImpl implements IInquiryService {
     @Autowired
     InquiryRepository inquiryRepository;
     ProductService productService;
+    ProductsRepository productsRepository;
     @Override
     public List<Inquiry> retrieveAllInquiries() {
         List<Inquiry> inquiries = (List<Inquiry>) inquiryRepository.findAll();
@@ -38,8 +39,9 @@ public class InquiryServiceImpl implements IInquiryService {
 
     //add product to inquiry
     @Override
-    public void addProductToInquiry(String id, String productId) {
-        Products p = productService.getProduct(Long.parseLong(productId));
+    public void addProductToInquiry(String id, Long productId) {
+    
+        Products p = productsRepository.findById(productId).get();
         Inquiry inquiry = retrieveInquiry(id);
         inquiry.getProductList().add(p);
         updateInquiry(inquiry);

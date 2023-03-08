@@ -47,7 +47,7 @@ import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
  }
  @PutMapping("/add-product-to-Inquiry/{Inquiry-id}/{product-id}")
     public void addProductToInquiry(@PathVariable("Inquiry-id") String id,
-            @PathVariable("product-id") String productId) {
+            @PathVariable("product-id") Long productId) {
         iis.addProductToInquiry(id, productId);
     }
 @PutMapping("get-products-from-Inquiry/{Inquiry-id}")

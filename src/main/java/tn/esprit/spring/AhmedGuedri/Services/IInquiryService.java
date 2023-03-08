@@ -13,7 +13,7 @@ public interface IInquiryService {
     public Inquiry retrieveInquiry(String id);
     public void clearInquiry(String id);
     public void removeProductFromInquiry(String id);
-    void addProductToInquiry(String id, String productId);
+    void addProductToInquiry(String id, Long productId);
     List<Products> getProductsFromInquiry(String id);
 
 }

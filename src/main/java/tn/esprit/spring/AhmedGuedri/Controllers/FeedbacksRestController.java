@@ -10,6 +10,7 @@ import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
 import tn.esprit.spring.AhmedGuedri.entities.Products;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -70,11 +71,11 @@ public class FeedbacksRestController {
         return feedbackService.getLeastRatedProduct();
     }
     @GetMapping("/getUniqueProducts5Stars")
-    List<Products> getUniqueProducts5Stars(){
+    Set<Products> getUniqueProducts5Stars(){
         return feedbackService.getUniqueProducts5Stars();
     }
     @GetMapping("/getUniqueProductsLessThan3Stars")
-    List<Products> getUniqueProductsLessThan3Stars(){
+     Set<Products> getUniqueProductsLessThan3Stars(){
         return feedbackService.getUniqueProductsLessThan3Stars();
     }
 

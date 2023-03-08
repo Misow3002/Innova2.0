@@ -68,6 +68,10 @@ public class ShoppingCartController {
         shoppingCartService.createShoppingCartForUser(userId);
     }
     
+    @PutMapping("/create-shoppingCart-for-all-users")
+    public void createShoppingCartForAllUsers() {
+        shoppingCartService.createShoppingCartForAllUsers();
+    }
 
     
 

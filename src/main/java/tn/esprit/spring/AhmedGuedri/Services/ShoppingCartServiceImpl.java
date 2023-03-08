@@ -84,6 +84,14 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         shoppingCart.setUser(u);
         addShoppingCart(shoppingCart);
     }
+    //create a shopping cart for all users
+    @Override
+    public void createShoppingCartForAllUsers() {
+        List<User> users = (List<User>) userRepository.findAll();
+        for (int i = 0; i < users.size(); i++) {
+            createShoppingCartForUser(users.get(i).getEmail());
+        }
+    }
 
 
 

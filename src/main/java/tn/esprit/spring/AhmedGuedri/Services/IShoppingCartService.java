@@ -18,7 +18,7 @@ public interface IShoppingCartService {
     void addProductToShoppingCart(String id, String idProduct);
     float getTotalPriceShoppingCart(String id);
     void createShoppingCartForUser(String idUser);
-
+    void createShoppingCartForAllUsers();
 
 
 }

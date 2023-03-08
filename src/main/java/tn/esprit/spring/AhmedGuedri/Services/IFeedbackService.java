@@ -21,7 +21,7 @@ public interface IFeedbackService {
     Products getMostRatedProduct();
     Products getMostRatedProduct5Stars();
     Products getLeastRatedProduct();
-    List<Products> getUniqueProducts5Stars();
-    List<Products> getUniqueProductsLessThan3Stars();
+    Set<Products> getUniqueProducts5Stars();
+    Set<Products> getUniqueProductsLessThan3Stars();
     
 }

@@ -132,7 +132,7 @@ public class FeedbackService implements IFeedbackService{
     }
     //get unique products with 5 stars
     @Override
-    public List<Products> getUniqueProducts5Stars() {
+    public Set<Products> getUniqueProducts5Stars() {
         List<Products> products = productsService.retrieveAllProducts();
         Set<Products> uniqueProducts = new HashSet<>();
         for (Products p : products) {
@@ -144,7 +144,7 @@ public class FeedbackService implements IFeedbackService{
     }
     //get unique products with less than 3 stars
     @Override
-    public List<Products> getUniqueProductsLessThan3Stars() {
+    public Set<Products> getUniqueProductsLessThan3Stars() {
         List<Products> products = productsService.retrieveAllProducts();
         Set<Products> uniqueProducts = new HashSet<>();
         for (Products p : products) {
