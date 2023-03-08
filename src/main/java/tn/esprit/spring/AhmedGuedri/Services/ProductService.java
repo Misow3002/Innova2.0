@@ -210,7 +210,6 @@ public class ProductService implements IProductService {
     }
 
 
-
     public String getnumberofordersbyeveryproductforasupplier(Long id) {
         List<DetailedOrders> dorders = (List<DetailedOrders>) detailedOrdersRepository.findAll();
         List<DetailedOrders> detailedOrdersbyrange = new ArrayList<>();
@@ -244,8 +243,8 @@ public class ProductService implements IProductService {
             System.out.println("Product: " + prod.getNameProducts() + ", Price: " + sales.getPrice() + ", Quantity: " + sales.getQuantity() +
                     ", Total: " + (sales.getPrice() * sales.getQuantity()) + " TND");
             message += "Product: " + prod.getNameProducts() + ", Price: " + sales.getPrice() + ", Quantity: " + sales.getQuantity() +
-                    ", Total: " + (sales.getPrice() * sales.getQuantity()) + " TND, Stock: "+prod.getNumberOfStock() +"Unit, Stock is supposed " +
-                    "to be: "+ (sales.getQuantity()+prod.getNumberOfStock()) +"\n";
+                    ", Total: " + (sales.getPrice() * sales.getQuantity()) + " TND, Stock: " + prod.getNumberOfStock() + "Unit, Stock is supposed " +
+                    "to be: " + (sales.getQuantity() + prod.getNumberOfStock()) + "\n";
         }
         message += "Total price of orders : " + fp + "\n" + "total number of orders : " + detailedOrdersbyrange.size() + "\n";
         message += "PS: The stock is supposed to be the sum of the quantity of orders and the current stock of the product.";
@@ -272,15 +271,25 @@ public class ProductService implements IProductService {
                 return o2.getProduct_order().getProductsList().size() - o1.getProduct_order().getProductsList().size();
             }
         });
-        return productsbyorders;*/
+        return productsbyorders;
 
     public List<Products> getAllProductsSortedByNumberOfOrders() {
         System.out.println(productsRepository.findAllOrderByNumberOfOrders());
         return productsRepository.findAllOrderByNumberOfOrders();
 
+    }*/
+
+    public List<Products> getProductsSortedByNumOrders() {
+        List<Object[]> results = productsRepository.findProductsOrderByNumOrders();
+        List<Products> sortedProducts = new ArrayList<>();
+        for (Object[] result : results) {
+            System.out.println("siiii");
+            sortedProducts.add((Products) result[0]);
+
+        }
+        return sortedProducts;
     }
 }
-
 
 ///////////////////////////////
 class ProductSales {

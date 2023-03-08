@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
 import tn.esprit.spring.AhmedGuedri.Services.IProductService;
 import tn.esprit.spring.AhmedGuedri.entities.DetailedOrders;
 import tn.esprit.spring.AhmedGuedri.entities.Products;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
@@ -17,6 +17,7 @@ import java.util.List;
 public class ProductsRestController {
     @Autowired
     private IProductService productService;
+    private ProductsRepository productsRepository;
     @PostMapping("/add")
     Products addProduct(@RequestBody Products products){
         return productService.addOrUpdateProduct(products);
@@ -30,9 +31,11 @@ public class ProductsRestController {
         return productService.getProduct(IdProduct);
     }
     @GetMapping("/all")
-    List<Products> getAllProducts(){return productService.retrieveAllProducts();}
-    @GetMapping("/allsorted")
-    List<Products> getAllProductsbyorders(){return productService.getAllProductsSortedByNumberOfOrders();}
+    List<Products> getAllProducts(){System.out.println(productService.retrieveAllProducts());
+        return productService.retrieveAllProducts();
+        }
+    /*@GetMapping("/allsorted")
+    List<Products> getAllProductsbyorders(){return productService.getProductsSortedByNumOrders();}*/
     @DeleteMapping("/delete/{id}")
     void deleteProducts(@PathVariable("id") Long IdProduct){
         productService.removeProduct(IdProduct);
@@ -48,5 +51,31 @@ public class ProductsRestController {
     @GetMapping("/order/getprods/{id}")
     String getprodsandstockbysup(@PathVariable("id") Long id){
         return productService.getnumberofordersbyeveryproductforasupplier(id);
+    }
+    /*@GetMapping("/sortByOrders")
+    public List<Products> getProductsSortedByOrders() {
+        List<Products> productsList = productService.retrieveAllProducts();
+        System.out.println(productsList);
+        //Collections.sort(productsList, (p1, p2) ->
+          //      Integer.compare(p2.getProduct_order().size(), p1.getProduct_order().size()));
+        return productsList;
+    }
+    @GetMapping("/sortedByNumOrders")
+    public List<Products> getProductsSortedByNumOrders() {
+        List<Object[]> productsWithNumOrders = productsRepository.findAllSortedByNumOrders();
+        List<Products> sortedProducts = new ArrayList<>();
+
+        for (Object[] productWithNumOrders : productsWithNumOrders) {
+            Products product = (Products) productWithNumOrders[0];
+            sortedProducts.add(product);
+        }
+
+        return sortedProducts;
+    }*/
+    @GetMapping("/sortedByNumOrders2")
+    public List<Products> getAllProductsSortedByOrderCount() {
+        List<Products> products = productsRepository.findAll();
+        products.sort(Comparator.comparingInt(p -> p.getProduct_order().size()));
+        return products;
     }
 }

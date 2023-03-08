@@ -45,8 +45,13 @@ public class Products implements Serializable {
     List<Feedbacks> FeedbackList;
 
     //Relation --> Orders
-    @ManyToMany
+    @ManyToMany//(mappedBy = "productsList")
     List<Orders> Product_order;
 
+    /*public List<List<Products>> getOrders() {
+        System.out.println(Product_order.stream().map(Orders::getProductsList).collect(Collectors.toList()));
+        return Product_order.stream().map(Orders::getProductsList).collect(Collectors.toList());
+
+    }*/
 }
 

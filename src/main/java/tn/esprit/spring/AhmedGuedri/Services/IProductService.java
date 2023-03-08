@@ -24,5 +24,7 @@ public interface IProductService {
 
     String getnumberofordersbyeveryproductforasupplier(Long id);
 
-    List<Products> getAllProductsSortedByNumberOfOrders();
+    //List<Products> getAllProductsSortedByNumberOfOrders();
+
+    List<Products> getProductsSortedByNumOrders();
 }
