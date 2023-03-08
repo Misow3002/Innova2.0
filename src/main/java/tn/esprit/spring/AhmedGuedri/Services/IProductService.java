@@ -1,6 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
 import org.springframework.mail.javamail.JavaMailSender;
+import tn.esprit.spring.AhmedGuedri.entities.CurrencyType;
 import tn.esprit.spring.AhmedGuedri.entities.DetailedOrders;
 import tn.esprit.spring.AhmedGuedri.entities.Products;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface IProductService {
     List<Products> retrieveAllProducts();
-    Products addOrUpdateProduct(Products p);
+    Products addOrUpdateProduct(Products p, Long Id, CurrencyType currencyType);
     Products getProduct(Long IdProducts);
     void removeProduct(Long IdProducts);
     void addOrUpdatedetailedOrders();
@@ -27,4 +28,8 @@ public interface IProductService {
     //List<Products> getAllProductsSortedByNumberOfOrders();
 
     List<Products> getProductsSortedByNumOrders();
+
+    List<Products> getProductsbyUser(Long idUser);
+
+    List<Products> getProductsByUser(Long userId);
 }

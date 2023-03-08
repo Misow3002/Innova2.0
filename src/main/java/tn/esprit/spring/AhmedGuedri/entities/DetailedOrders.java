@@ -21,6 +21,7 @@ public class DetailedOrders implements Serializable {
     private Long ordernumber;
     private Long Product;
     private Float Price;
+    private CurrencyType Currency;
     private Long Supplier;
     private Date BoughtDate;
 }

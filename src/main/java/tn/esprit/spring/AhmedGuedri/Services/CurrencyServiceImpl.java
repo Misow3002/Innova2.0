@@ -48,7 +48,7 @@ public class CurrencyServiceImpl implements ICurrencyService {
         return currencyRepository.findById(Long.parseLong(id)).get();
     }
     @Override
-    @Scheduled(fixedRate = 3600000) // run every hour
+    @Scheduled(fixedRate = 60000) // run every hour
     public void updateCurrencyRates() {
         try {
             List<Currency> currencies =currencyRepository.findAll();
@@ -60,9 +60,6 @@ public class CurrencyServiceImpl implements ICurrencyService {
                 String url = "https://www.xe.com/currencyconverter/convert/?Amount=1&From="+namec.toUpperCase()+"&To=TND";
                 System.out.println("URL  "+url);
                 Document doc = Jsoup.connect(url).get();
-
-
-
 // Select the <p> element with the given class and get its text content
                 String pText = doc.select("p.result__BigRate-sc-1bsijpp-1.iGrAod").text();
 

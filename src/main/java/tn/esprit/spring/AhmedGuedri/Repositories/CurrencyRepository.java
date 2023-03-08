@@ -11,4 +11,5 @@ import tn.esprit.spring.AhmedGuedri.entities.CurrencyType;
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
     Currency findByCurrencyType(CurrencyType currencyType);
+
 }

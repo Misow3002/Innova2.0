@@ -1,41 +1,48 @@
 package tn.esprit.spring.AhmedGuedri.Controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
 import tn.esprit.spring.AhmedGuedri.Services.IProductService;
+import tn.esprit.spring.AhmedGuedri.entities.CurrencyType;
 import tn.esprit.spring.AhmedGuedri.entities.DetailedOrders;
 import tn.esprit.spring.AhmedGuedri.entities.Products;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/product")
 public class ProductsRestController {
-    @Autowired
     private IProductService productService;
     private ProductsRepository productsRepository;
-    @PostMapping("/add")
-    Products addProduct(@RequestBody Products products){
-        return productService.addOrUpdateProduct(products);
+    @PostMapping("/add/{id}")
+    Products addProduct(@RequestBody Products products, @PathVariable("id") Long Id, @RequestParam CurrencyType currencyType){
+        return productService.addOrUpdateProduct(products,Id,currencyType);
     }
-    @PostMapping("/update")
-    Products updateProduct(@RequestBody Products products){
-        return productService.addOrUpdateProduct(products);
+    @PutMapping("/update/{id}")
+    Products updateProduct(@RequestBody Products products, @PathVariable("id") Long Id,@RequestBody CurrencyType currencyType){
+        return productService.addOrUpdateProduct(products,Id,currencyType);
     }
     @GetMapping("/get/{id}")
     Products getProduct(@PathVariable("id") Long IdProduct){
         return productService.getProduct(IdProduct);
     }
-    @GetMapping("/all")
-    List<Products> getAllProducts(){System.out.println(productService.retrieveAllProducts());
+    @GetMapping("/getbyuser/{id}")
+    List<Products> getProductbyuser(@PathVariable("id") Long IdUser){
+        return productService.getProductsbyUser(IdUser);
+    }
+    @GetMapping("/All")
+    List<Products> getAllProducts(){
         return productService.retrieveAllProducts();
         }
-    /*@GetMapping("/allsorted")
-    List<Products> getAllProductsbyorders(){return productService.getProductsSortedByNumOrders();}*/
+    @GetMapping("/getbyuser1/{userId}")
+    public List<Products> getProductsByUser(@PathVariable Long userId) {
+        return productService.getProductsByUser(userId);
+    }
     @DeleteMapping("/delete/{id}")
     void deleteProducts(@PathVariable("id") Long IdProduct){
         productService.removeProduct(IdProduct);
@@ -72,10 +79,11 @@ public class ProductsRestController {
 
         return sortedProducts;
     }*/
-    @GetMapping("/sortedByNumOrders2")
+    @GetMapping("/sortedByNumOrders")
     public List<Products> getAllProductsSortedByOrderCount() {
         List<Products> products = productsRepository.findAll();
         products.sort(Comparator.comparingInt(p -> p.getProduct_order().size()));
         return products;
     }
+
 }

@@ -1,6 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,29 +30,29 @@ public class Products implements Serializable {
     private boolean Available;
     private int NumberOfStock;
     //Relation --> Inquiry
+    @JsonIgnore
     @ManyToMany(mappedBy = "ProductList")
     List<Inquiry> InquiryList;
     //Relation --> USER
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToMany
     List<User> userProducts;
     //Relation -->Currency
+    @JsonIgnore
     @ManyToMany
     List<Currency> CurrencyList;
     //Relation --> Tax
+    @JsonIgnore
     @ManyToOne
     Tax tax;
     //Relation --> Feedbacks
+    @JsonIgnore
     @OneToMany(mappedBy = "feedbacksProd")
     List<Feedbacks> FeedbackList;
-
     //Relation --> Orders
+    //@JsonIgnore
     @ManyToMany//(mappedBy = "productsList")
     List<Orders> Product_order;
 
-    /*public List<List<Products>> getOrders() {
-        System.out.println(Product_order.stream().map(Orders::getProductsList).collect(Collectors.toList()));
-        return Product_order.stream().map(Orders::getProductsList).collect(Collectors.toList());
-
-    }*/
 }
 

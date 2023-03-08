@@ -1,5 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Services;
 
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -7,14 +9,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tn.esprit.spring.AhmedGuedri.Repositories.DetailedOrdersRepository;
-import tn.esprit.spring.AhmedGuedri.Repositories.OrdersRepository;
-import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
-import tn.esprit.spring.AhmedGuedri.Repositories.UserRepository;
+import tn.esprit.spring.AhmedGuedri.Repositories.*;
 import tn.esprit.spring.AhmedGuedri.entities.*;
+import tn.esprit.spring.AhmedGuedri.entities.Currency;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.io.ByteArrayOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -28,6 +31,7 @@ public class ProductService implements IProductService {
     DetailedOrdersRepository detailedOrdersRepository;
     UserRepository userRepository;
     OrdersRepository ordersRepository;
+    CurrencyRepository currencyRepository;
     @Autowired
     ProductsRepository productsRepository;
     private EntityManager entityManager;
@@ -35,10 +39,23 @@ public class ProductService implements IProductService {
     @Override
     public List<Products> retrieveAllProducts() {
         return productsRepository.findAll();
+        /*for (Products prod : prods) {
+            System.out.println("prod = " + prod);
+        }
+
+        return prods;*/
     }
 
     @Override
-    public Products addOrUpdateProduct(Products p) {
+    public Products addOrUpdateProduct(Products p, Long Id, CurrencyType currencyType) {
+        User supplier = userRepository.findById(Id).orElse(null);
+        Currency cur = currencyRepository.findByCurrencyType(currencyType);
+        List<Currency> currencies = new ArrayList<>();
+        currencies.add(cur);
+        p.setCurrencyList(currencies);
+        List<User> suppliers = new ArrayList<>();
+        suppliers.add(supplier);
+        p.setUserProducts(suppliers);
         return productsRepository.save(p);
     }
 
@@ -47,6 +64,13 @@ public class ProductService implements IProductService {
         return productsRepository.findById(IdProducts).orElse(null);
     }
 
+    public List<Products> getProductsByUser(Long userId) {
+        return productsRepository.findByUserId(userId);
+    }
+
+    public List<Products> getProductsbyUser(Long IdUser) {
+        return productsRepository.findProductsByUserProducts(IdUser);
+    }
     @Override
     public void removeProduct(Long IdProducts) {
         productsRepository.deleteById(IdProducts);
@@ -67,14 +91,15 @@ public class ProductService implements IProductService {
             System.out.println("prod = " + prod);
             Long supp = order.getProductsList().get(0).getUserProducts().get(0).getId();
             System.out.println("supp = " + supp);
-            Float price = order.getProductsList().get(0).getPrice();
-            System.out.println("price = " + price);
+            //Float price = order.getProductsList().get(0).getPrice();
+            Float exchangerate = changepricebyrate(order.getProductsList().get(0).getUserProducts().get(0).getId());
+            System.out.println("price = " + exchangerate);
             Date date = order.getBroughtDate();
             System.out.println("date = " + date);
             detailedOrders.setOrdernumber(ordernum);
             detailedOrders.setProduct(prod);
             detailedOrders.setSupplier(supp);
-            detailedOrders.setPrice(price);
+            detailedOrders.setPrice(exchangerate);
             detailedOrders.setBoughtDate(date);
             detailedOrdersRepository.save(detailedOrders);
         }
@@ -250,34 +275,7 @@ public class ProductService implements IProductService {
         message += "PS: The stock is supposed to be the sum of the quantity of orders and the current stock of the product.";
         return message;
     }
-    /*public List<Products> sortproductsbyorders() {
-        List<Products> products = (List<Products>) productsRepository.findAll();
-        List<Products> productsbyorders = new ArrayList<>();
-        List<DetailedOrders> dorders = (List<DetailedOrders>) detailedOrdersRepository.findAll();
-        List<DetailedOrders> detailedOrdersbyrange = new ArrayList<>();
-        for (Products product : products) {
-            for (DetailedOrders dorder : dorders) {
-                if (dorder.getProduct() == product.getIdProducts()) {
-                    detailedOrdersbyrange.add(dorder);
-                }
-            }
-            product.setProduct_order(detailedOrdersbyrange.get(0));
-            productsbyorders.add(product);
-            detailedOrdersbyrange.clear();
-        }
-        Collections.sort(productsbyorders, new Comparator<Products>() {
-            @Override
-            public int compare(Products o1, Products o2) {
-                return o2.getProduct_order().getProductsList().size() - o1.getProduct_order().getProductsList().size();
-            }
-        });
-        return productsbyorders;
 
-    public List<Products> getAllProductsSortedByNumberOfOrders() {
-        System.out.println(productsRepository.findAllOrderByNumberOfOrders());
-        return productsRepository.findAllOrderByNumberOfOrders();
-
-    }*/
 
     public List<Products> getProductsSortedByNumOrders() {
         List<Object[]> results = productsRepository.findProductsOrderByNumOrders();
@@ -289,7 +287,16 @@ public class ProductService implements IProductService {
         }
         return sortedProducts;
     }
+    public float changepricebyrate(Long id){
+        Products prod = productsRepository.findById(id).orElse(null);
+        Currency currency = currencyRepository.findById(prod.getCurrencyList().get(0).getIdCurrency()).orElse(null);
+        float price = prod.getPrice();
+        float rate = currency.getExchangeRate();
+        return price * rate;
+    }
+
 }
+
 
 ///////////////////////////////
 class ProductSales {

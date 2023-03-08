@@ -12,18 +12,17 @@ import java.util.List;
 
 @Repository
 public interface ProductsRepository extends JpaRepository<Products, Long> {
-    @Query("select p from Products p")
-    List<Products>findAll();
     @Query("SELECT p FROM Products p ORDER BY size(p.Product_order)")
     List<Products> findAllOrderByNumberOfOrders();
 
     @Query("SELECT p, COUNT(o) as num_orders FROM Products p JOIN p.Product_order o GROUP BY p ORDER BY num_orders DESC")
     List<Object[]> findProductsOrderByNumOrders();
 
-    @Query("SELECT p, COUNT(o) AS numOrders " +
-            "FROM Products p " +
-            "JOIN p.Product_order o " +
-            "GROUP BY p " +
-            "ORDER BY numOrders DESC")
-    List<Object[]> findAllSortedByNumOrders();
+    List<Products>findProductsByUserProducts(Long id);
+
+    @Query("SELECT p FROM Products p JOIN p.userProducts u WHERE u.Id = :userId")
+    List<Products> findByUserId(@Param("userId") Long userId);
+
+    @Query("select IdProducts,AdressProducts,Description,NameProducts,NumberOfStock,Price,Available from Products ")
+    List<Products> getAllProducts();
 }
