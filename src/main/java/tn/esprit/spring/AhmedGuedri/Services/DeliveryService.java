@@ -55,8 +55,10 @@ public class DeliveryService implements IDeliveryService{
     public Delivery assignDelivery(Long idOrder) {
         Orders orders=ordersRepository.findById(idOrder).orElse(null);
         String address=orders.getShippingAdresse();
-        List<User> deliverys = userRepository.findAll().stream().filter(d->d.getRoles().equals(Roles.DeliveryP)).collect(Collectors.toList());
-
+       // List<User> deliverys = userRepository.findAll().stream().filter(d->d.getRoles().equals(RolesTypes.ROLE_DELIVERY)).collect(Collectors.toList());
+        List<User> deliverys = userRepository.All_Delivery();
+        System.out.println(deliverys.get(0));
+        // List<User> deliverys=userRepository.find
         //api address
         double lat1, lon1;
         lat1 = getAddressCoordinate(address)[0];
