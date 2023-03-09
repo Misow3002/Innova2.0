@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -20,12 +21,14 @@ public class Feedbacks implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idfeedbacks")
     private Long IdFeedBacks;
-    private Number Stars;
+    private int Stars;
     @ManyToOne
     Products feedbacksProd;
 
     //Relation --> Feedobject
     @OneToOne
     FeedObject feedObject;
+
+  
 }
 

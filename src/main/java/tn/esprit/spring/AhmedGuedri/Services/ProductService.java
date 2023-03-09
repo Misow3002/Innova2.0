@@ -165,7 +165,8 @@ public class ProductService implements IProductService {
     public void sendMonthlyReport() {
         Date startDate = Date.from((LocalDate.now().minusMonths(1)).atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        List<User> suppliers = userRepository.findUserByRoles(Roles.Provider);
+        //List<User> suppliers = userRepository.findUserByRoles(Roles.Provider);
+        List<User> suppliers = userRepository.All_Delivery();
         for (User supplier : suppliers) {
             Long supid = supplier.getId();
             List<DetailedOrders> detailedOrders = getDetailedOrdersbyDaterange(startDate, endDate, supid);
@@ -337,4 +338,5 @@ class ProductSales {
     public void incrementQuantity() {
         quantity++;
     }
+
 }

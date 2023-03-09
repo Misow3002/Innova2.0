@@ -24,11 +24,17 @@ public class Delivery implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date StarDate ;
     @Temporal(TemporalType.DATE)
-    private Date EndDate ;
+    private Date estimatedDate ;
     @Enumerated(EnumType.STRING)
     private StatusType StatusType;
 
+
+    @OneToOne
+    User deliveredBy;
     @OneToMany (mappedBy = "delivery")
     List<Orders> OrdersList;
+
+    public static class Role {
+    }
 }
 

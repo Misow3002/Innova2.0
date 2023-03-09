@@ -13,6 +13,7 @@ public interface IProductService {
     Products addOrUpdateProduct(Products p, Long Id, CurrencyType currencyType);
     Products getProduct(Long IdProducts);
     void removeProduct(Long IdProducts);
+
     void addOrUpdatedetailedOrders();
 
     List<DetailedOrders> getDetailedOrdersbyDaterange(Date startdate, Date enddate, Long supplier);
@@ -32,4 +33,5 @@ public interface IProductService {
     List<Products> getProductsbyUser(Long idUser);
 
     List<Products> getProductsByUser(Long userId);
+
 }
