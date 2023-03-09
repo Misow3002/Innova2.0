@@ -1,10 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +18,7 @@ public class Orders implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idorders")
     private Long IdOrders;
+    @Enumerated(EnumType.STRING)
     private OrdersType StatusOrders;
     @Temporal(TemporalType.TIMESTAMP)
     private Date BroughtDate;
@@ -41,8 +39,6 @@ public class Orders implements Serializable {
     //Relation Product
     @ManyToMany
     private List<Products> productsList;
-
-
 
 
 }

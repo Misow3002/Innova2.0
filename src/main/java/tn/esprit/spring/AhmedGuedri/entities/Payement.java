@@ -1,25 +1,27 @@
 package tn.esprit.spring.AhmedGuedri.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
 public class Payement implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idpayment")
     private Long IdPayment;
+    @Enumerated(EnumType.STRING)
     private PaymentType PaymentType;
     @Temporal(TemporalType.TIMESTAMP)
     private Date PaymentDate;
@@ -30,5 +32,8 @@ public class Payement implements Serializable {
     //Relation Invoices
     @OneToOne
     Invoices PaymentInvoice;
-}
 
+    //stripe
+    int created;
+
+}
