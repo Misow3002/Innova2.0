@@ -22,7 +22,7 @@ public class Currency implements Serializable {
     @Column(name="idcurrency")
     private Long IdCurrency;
     @Enumerated(EnumType.STRING)
-    private CurrencyType CurrencyType;
+    private CurrencyType currencyType;
     @Temporal(TemporalType.DATE)
     private Date DateC ;
     private Float ExchangeRate;

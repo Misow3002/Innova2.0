@@ -41,13 +41,15 @@ public class Orders implements Serializable {
     //Relation -->Invoices
     @OneToOne
     Invoices OrdersInvoice;
+
+
+    //Relation Product
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Products> productsList;
+
     //Relation-->ShoppingCart
     @OneToOne
     ShoppingCart shoppingCart;
-    //Relation Product
-    @ManyToMany
-    private List<Products> productsList;
-
 
 }
 
