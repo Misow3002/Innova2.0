@@ -4,18 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.AhmedGuedri.Repositories.InquiryRepository;
+
 import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
 import tn.esprit.spring.AhmedGuedri.Services.ProductService;
 import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
 import tn.esprit.spring.AhmedGuedri.entities.Products;
+
 @Service
 
 public class InquiryServiceImpl implements IInquiryService {
     @Autowired
     InquiryRepository inquiryRepository;
+
     ProductService productService;
     @Autowired
     ProductsRepository productsRepository;
+
     @Override
     public List<Inquiry> retrieveAllInquiries() {
         List<Inquiry> inquiries = (List<Inquiry>) inquiryRepository.findAll();
@@ -37,6 +41,7 @@ public class InquiryServiceImpl implements IInquiryService {
     public Inquiry retrieveInquiry(String id) {
         return inquiryRepository.findById(Long.parseLong(id)).get();
     }
+
 
     //add product to inquiry
     @Override

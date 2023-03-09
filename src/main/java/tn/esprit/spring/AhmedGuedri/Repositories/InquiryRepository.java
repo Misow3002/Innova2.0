@@ -1,4 +1,5 @@
 package tn.esprit.spring.AhmedGuedri.Repositories;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,5 +12,6 @@ public interface InquiryRepository extends CrudRepository<Inquiry, Long> {
 
     @Query("SELECT i FROM Inquiry i WHERE i.Category = :productCategory")
     public List<Inquiry>  getInquiryByCategory(@Param("productCategory") ProductCategory productCategory);
+
 }
 

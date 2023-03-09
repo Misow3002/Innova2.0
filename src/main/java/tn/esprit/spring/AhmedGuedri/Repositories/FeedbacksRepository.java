@@ -1,5 +1,4 @@
 package tn.esprit.spring.AhmedGuedri.Repositories;
-
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,5 +29,4 @@ List<Feedbacks> findByFeedbacksProd(Products product);
 
     public List<String> TopTierSellers();
     //  "AND u.userProducts.IdProducts=b.feedbacksProd.IdProducts " +
-
 }

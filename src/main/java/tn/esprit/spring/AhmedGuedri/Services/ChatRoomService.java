@@ -24,11 +24,11 @@ public class ChatRoomService implements IChatRoomService {
     InquiryRepository inquiryRepository;
     IUserService userService;
 
+
     @Override
     public List<ChatRoom> retrieveAllChatrooms() {
         return (List<ChatRoom>) chatRoomRepository.findAll();
     }
-
 
 
 
@@ -37,6 +37,7 @@ public class ChatRoomService implements IChatRoomService {
          chatRoomRepository.save(ChatRoom);
         userService.AffectToChatRoom(email,ChatRoom);
         return ChatRoom;
+
     }
 
     @Override
@@ -44,6 +45,7 @@ public class ChatRoomService implements IChatRoomService {
 
         return chatRoomRepository.save(e);
     }
+
 
     @Override
     public ChatRoom RemoveChatrooms(Long idchatroom) {
@@ -55,6 +57,7 @@ public class ChatRoomService implements IChatRoomService {
     public ChatRoom retrieveChatRoom(String id) {
         return chatRoomRepository.findById(Long.parseLong(id)).get();
     }
+
 
     @Override
     public List<ChatRoom> retrieveAllChatroomsSortedByName(String name) {

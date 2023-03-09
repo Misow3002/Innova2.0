@@ -1,6 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u WHERE u.roles = :r")
     public List<User> searchUserRoles(@Param("r") RolesTypes role);
 
+    @Query(value="SELECT u.* \n" +
+            "FROM user u , role r , user_roles ur\n" +
+            "WHERE r.name='ROLE_DELIVERY' and ur.roles_id=r.id and u.id=ur.user_id;",nativeQuery = true)
+    public List<User> All_Delivery();
+
     //sql query count int chatroom of user
     @Query(value = "SELECT COUNT(*) FROM user_chat_rooms r WHERE r.user_id = ?1",
             nativeQuery = true)
@@ -34,6 +40,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     public List<Object[]> Authentification(@Param("Email") String email);
 
     Optional<User> findByEmail(String username);
+
     Boolean existsByEmail(String email);
 
     //kol user 9adeh aandou min produit
@@ -48,5 +55,4 @@ public interface UserRepository extends JpaRepository<User,Long> {
     //@Query("select u from User u,Orders o where u.orders.id=o.id")
     //public List<User> searchUserByOrders();
     //
-
 }

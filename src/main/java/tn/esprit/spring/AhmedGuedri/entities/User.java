@@ -36,6 +36,7 @@ public class User implements Serializable {
     private Long PhoneNumber;
     private String Img_URL;
     private boolean Enabled;
+
     private String Country;
     @Temporal(TemporalType.DATE)
     private Date joined;
@@ -63,6 +64,8 @@ public class User implements Serializable {
     @OneToOne
     ShoppingCart shoppingCart;
 
+    @OneToOne
+    Delivery delivery;
     @ManyToMany
     List<ChatRoom> chatRooms;
 }

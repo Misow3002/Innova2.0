@@ -115,6 +115,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- DELIVERY DEPENDENCY START-->
+		<dependency>
+			<groupId>com.byteowls</groupId>
+			<artifactId>jopencage</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<!-- DELIVERY DEPENDENCY END-->
 	</dependencies>
 
 	<build>

@@ -19,7 +19,9 @@ public class MessageService implements IMessageService{
 
     MessagesRepository messagesRepository;
     ChatRoomRepository chatRoomRepository;
+
     UserRepository userRepository;
+
     @Override
     public List<Message> retrieveAllMessages() {
         return (List<Message>) messagesRepository.findAll();
@@ -38,6 +40,7 @@ public class MessageService implements IMessageService{
         e.setChatRoom(cr);
         return messagesRepository.save(e);
     }
+
     /*
         @Override
         public Message AjouterMessages(Message Message,Long ChatRoom) {
@@ -51,6 +54,7 @@ public class MessageService implements IMessageService{
         return Message;
     }
    */
+
     @Override
     public Message RetrieveMessages(Long idMessage) {
         return messagesRepository.findById(idMessage).get();
@@ -91,3 +95,4 @@ public class MessageService implements IMessageService{
     }
 
 }
+

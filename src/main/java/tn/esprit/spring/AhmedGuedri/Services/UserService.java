@@ -106,6 +106,7 @@ public class UserService implements IUserService{
 
         u.setRoles(roles);
         userRepository.save(u);
+
         System.out.println("User Created");
     }
 

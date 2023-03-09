@@ -1,14 +1,12 @@
 package tn.esprit.spring.AhmedGuedri.Services;
-
-
 import org.springframework.data.repository.query.Param;
 import tn.esprit.spring.AhmedGuedri.entities.*;
+
 
 import java.util.List;
 
 public interface IChatRoomService {
     List<ChatRoom> retrieveAllChatrooms();
-
     ChatRoom AjouterChatrooms (String email,ChatRoom chatroom);
 
     ChatRoom Updatechatrooms (ChatRoom e);
@@ -25,5 +23,6 @@ public interface IChatRoomService {
     List<Inquiry> getInquiryByCategory(ProductCategory productCategory);
     public int countChatRoomByUser(Long userid);
     public List<Object[]> ListUsersByChatRoom(Long chatroomid);
+
 
 }
