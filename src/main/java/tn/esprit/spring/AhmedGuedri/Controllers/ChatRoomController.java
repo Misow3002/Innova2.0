@@ -2,22 +2,24 @@ package tn.esprit.spring.AhmedGuedri.Controllers;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Services.IChatRoomService;
+import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
+
 import tn.esprit.spring.AhmedGuedri.Services.IUserService;
 import tn.esprit.spring.AhmedGuedri.Services.UserService;
 import tn.esprit.spring.AhmedGuedri.entities.*;
 
 import java.util.List;
 
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/chatroom/")
 public class ChatRoomController {
-
-
     private IChatRoomService iChatRoomService;
     private UserService userService;
     IUserService iUserService;
@@ -29,6 +31,7 @@ public class ChatRoomController {
 
 
     @PostMapping("addChatroom")
+
     public ResponseEntity<ChatRoom> AjouterChatrooms(@RequestBody ChatRoom ce,String email) {
 
         System.out.printf(String.valueOf(ce));
@@ -38,6 +41,7 @@ public class ChatRoomController {
         return new ResponseEntity<ChatRoom>(HttpStatus.CREATED);
 
     }
+
 
     //AddUserToChatRoom
     @PostMapping("AddUserToChatRoom")
@@ -56,6 +60,7 @@ public class ChatRoomController {
         return iChatRoomService.Updatechatrooms(e);
 
     }
+
 
     @PutMapping("/Leavechatroom/{idchatroom}")
     public ChatRoom RemoveChatrooms(@PathVariable("idchatroom") Long idchatroom) {

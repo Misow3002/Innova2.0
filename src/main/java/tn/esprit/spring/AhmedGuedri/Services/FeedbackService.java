@@ -16,6 +16,7 @@ public class FeedbackService implements IFeedbackService{
     FeedbacksRepository feedbacksRepository;
     ProductsRepository productsRepository;
     ProductService productsService;
+
     @Override
     public List<Feedbacks> retrieveAllFeedbacks() {
         return feedbacksRepository.findAll();
@@ -35,6 +36,7 @@ public class FeedbackService implements IFeedbackService{
     public void removeFeedback(Long IdFeedbacks) {
         feedbacksRepository.deleteById(IdFeedbacks);
     }
+
 
     //get feedbacks by product
     @Override
@@ -155,4 +157,3 @@ public class FeedbackService implements IFeedbackService{
         return uniqueProducts;
     }
 }
-

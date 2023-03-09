@@ -5,6 +5,7 @@ import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
 import tn.esprit.spring.AhmedGuedri.entities.Message;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
+
 import java.util.List;
 
 public interface IMessageService {
@@ -20,6 +21,7 @@ public interface IMessageService {
 
 
     Message RemoveMessages(Long idMessage);
+
 public int countMessagesByChatRoom(Long idChatRoom);
   //  public void insertMessage(Long iduser, Long sent_list_idmsg);
   List<Object[]>  ListsentMessagesByChatRoom();
@@ -29,4 +31,5 @@ public int countMessagesByChatRoom(Long idChatRoom);
   //  public void recieveMessage(Long iduser,Long received_list_idmsg);
     //ListMessagesByChatRoom
     List<Object[]> ListMessagesByChatRoom(Long id);
+
 }

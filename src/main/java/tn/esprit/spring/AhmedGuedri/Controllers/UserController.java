@@ -1,6 +1,7 @@
 package tn.esprit.spring.AhmedGuedri.Controllers;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/")
 public class UserController {
+
 //    @Bean
 //    public PasswordEncoder encoder() {
 //        return new BCryptPasswordEncoder();
@@ -40,6 +42,7 @@ public class UserController {
             iUserService.addUser(User);
         System.out.println( User.getHashedPWD().getPassword());
             ipwdService.AssignPasswordToUser(User, User.getHashedPWD().getPassword());
+
 
         return new ResponseEntity<User>(HttpStatus.CREATED);
     }
@@ -123,6 +126,7 @@ public class UserController {
           return iUserService.VerifyForgotPasswordToken(email, newPasswordRequest.getPassword(), newPasswordRequest.getNewPassword(), token);
     }
 // SendAndReceive
+
 
 
 }

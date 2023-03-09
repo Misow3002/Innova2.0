@@ -13,11 +13,13 @@ import tn.esprit.spring.AhmedGuedri.entities.User;
 
 import java.util.List;
 
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/message/")
 public class MessageController {
     private IMessageService iMessageService;
+
     private IUserService iUserServices;
     private final UserRepository userRepository;
 
@@ -28,6 +30,7 @@ public class MessageController {
 
 
     @PostMapping("addMessage")
+
     public String AjouterMessages(@RequestBody Message Message, Long IdChatRoom, String email) {
 
         System.out.printf(String.valueOf(Message));
@@ -43,6 +46,7 @@ public class MessageController {
 
 
 //        return new ResponseEntity<Message>(HttpStatus.CREATED);
+
 
     }
 

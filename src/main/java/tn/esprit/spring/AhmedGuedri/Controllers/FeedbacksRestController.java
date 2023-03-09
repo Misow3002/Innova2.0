@@ -3,7 +3,6 @@ package tn.esprit.spring.AhmedGuedri.Controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
-
 import tn.esprit.spring.AhmedGuedri.Services.FeedbackService;
 import tn.esprit.spring.AhmedGuedri.entities.Feedbacks;
 import tn.esprit.spring.AhmedGuedri.entities.Inquiry;
@@ -11,6 +10,7 @@ import tn.esprit.spring.AhmedGuedri.entities.Products;
 
 import java.util.List;
 import java.util.Set;
+
 
 @RestController
 @AllArgsConstructor
@@ -37,6 +37,7 @@ public class FeedbacksRestController {
     void deleteInquiry(@PathVariable("id") Long Id){
         feedbackService.removeFeedback(Id);
     }
+
     @GetMapping("/getFeedbacksByProduct/{id}")
     List<Feedbacks> getFeedbacksByProduct(@PathVariable("id") Long Id){
         return feedbackService.getFeedbacksByProduct(Id);
@@ -78,9 +79,6 @@ public class FeedbacksRestController {
      Set<Products> getUniqueProductsLessThan3Stars(){
         return feedbackService.getUniqueProductsLessThan3Stars();
     }
-
-
-    
 
 
 }

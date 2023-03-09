@@ -7,11 +7,13 @@ import tn.esprit.spring.AhmedGuedri.entities.Products;
 import java.util.List;
 import java.util.Set;
 
+
 public interface IFeedbackService {
     List<Feedbacks> retrieveAllFeedbacks();
     Feedbacks addOrUpdateFeedback(Feedbacks f);
     Feedbacks getFeedback(Long IdFeedbacks);
     void removeFeedback(Long IdFeedbacks);
+
     List<Feedbacks> getFeedbacksByProduct(Long IdProduct);
 
     Feedbacks addAndAssigntoProduct(Feedbacks e, Long IdProduct);
@@ -23,5 +25,4 @@ public interface IFeedbackService {
     Products getLeastRatedProduct();
     Set<Products> getUniqueProducts5Stars();
     Set<Products> getUniqueProductsLessThan3Stars();
-    
 }

@@ -5,6 +5,7 @@ import tn.esprit.spring.AhmedGuedri.entities.ChatRoom;
 import tn.esprit.spring.AhmedGuedri.entities.User;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 
 public interface IUserService {
