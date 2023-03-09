@@ -24,6 +24,4 @@ public class ShoppingCart implements Serializable {
     @OneToOne
     private User user;
 
-
-
 }
