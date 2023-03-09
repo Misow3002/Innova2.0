@@ -43,16 +43,37 @@ public class OrderService implements IOrderService {
     @Override
     public Orders addOrders(Orders orders ,Long iduser) {
         User user = userRepo.findById(iduser).get();
+
         //update user
         List<Orders> ListOrders=new ArrayList<>(user.getUser_orders());
-        ListOrders.add(orders);
+        System.out.println("SIZE : "+user.getShoppingCart().getProductsList().size());
+
+
+        //loop example
+        for (Products p : user.getShoppingCart().getProductsList()) {
+            ListOrders.add(orders);
+            Orders o=new Orders();
+            o.setConfirmation(orders.isConfirmation());
+            o.setStatusOrders(orders.getStatusOrders());
+            o.setBroughtDate(orders.getBroughtDate());
+
+
+
+           // o.setShoppingCart(user.getShoppingCart());
+            orderRepo.save(o);
+        }
         user.setUser_orders(ListOrders);
-        orders.setShoppingCart(user.getShoppingCart());
+        Products p = new Products();
+        p.setProduct_order(ListOrders);
+        productRepo.save(p);
+        userRepo.save(user);
+        //orders.setProductsList();
+        //orders.setShoppingCart(user.getShoppingCart());
         //userRepo.save(user);
         //end update
         //CHANGEME
        // orders.setUser(user);
-        return orderRepo.save(orders);
+        return orders;
     }
 
     @Override

@@ -2,6 +2,7 @@ package tn.esprit.spring.AhmedGuedri.Controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.AhmedGuedri.Repositories.ProductsRepository;
 import tn.esprit.spring.AhmedGuedri.Services.IProductService;
@@ -20,6 +21,7 @@ public class ProductsRestController {
     private IProductService productService;
     private ProductsRepository productsRepository;
     @PostMapping("/add/{id}")
+    @PreAuthorize("hasRole('PROVIDER') or hasRole('ADMIN')")
     Products addProduct(@RequestBody Products products, @PathVariable("id") Long Id, @RequestParam CurrencyType currencyType){
         return productService.addOrUpdateProduct(products,Id,currencyType);
     }
